@@ -14,7 +14,7 @@ Widget voipMaxTitle() {
         textDirection: TextDirection.ltr,
         children: [
           SizedBox(
-              height: Get.height * .05,
+              height: Get.height * .03,
               child: Hero(
                 tag: "onB_logo",
                 child: Image.asset(
@@ -28,7 +28,7 @@ Widget voipMaxTitle() {
               text: "VoIP",
               style: textLarge.copyWith(fontWeight: FontWeight.bold),
               children: [
-                TextSpan(text: "Max", style: textMedium),
+                TextSpan(text: "Max", style: textLarge),
               ],
             ),
           )
@@ -37,7 +37,7 @@ Widget voipMaxTitle() {
       spY(15),
       Text(
         "Everything you need is in one place",
-        style: textXLarge.copyWith(fontWeight: FontWeight.bold),
+        style: textXLarge.copyWith(fontWeight: FontWeight.w600),
         maxLines: 2,
       )
     ],

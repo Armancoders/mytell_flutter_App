@@ -7,3 +7,6 @@ const primaryColor = Color(0xff0D3CFE);
 const textColor = Color(0xff000000);
 
 const muteColor = Color(0xff999999);
+
+const hintColor = Color(0xffA9A9A9);
+const hintBackGroundColor = Color(0xffF7F8FA);
