@@ -6,6 +6,8 @@ import 'package:voipmax/src/core/theme/text_theme.dart';
 import 'package:voipmax/src/modules/OnBoarding/widgets.dart';
 import 'package:voipmax/src/routes/routes.dart';
 
+import '../../core/theme/dimensions.dart';
+
 class OnBoarding extends StatelessWidget {
   const OnBoarding({super.key});
 
@@ -13,10 +15,9 @@ class OnBoarding extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      top: false,
       child: Container(
           padding: EdgeInsets.only(
-            top: Get.height * .04,
+            top: Get.height * .08,
             left: Get.width * .06,
             right: Get.width * .06,
           ),
@@ -29,26 +30,29 @@ class OnBoarding extends StatelessWidget {
               voipMaxBanner(),
               voipMaxTitle(),
               voipMaxPrivacyPolicy(),
-              Button(
+              spY(15),
+              Hero(
+                tag: "btn",
+               child: Button(
                   btnWidth: Get.width,
                   btnBackGroundColor: primaryColor,
                   btnChild: Text(
-                    "Login",
+                    "Start",
                     style: textMedium.copyWith(color: backGroundColor),
                   ),
                   btnOnPressed: () {
                     Get.toNamed(Routes.LOGIN);
-                  }),
+                  }),),
               // spY(15),
-              Button(
-                  btnWidth: Get.width,
-                  btnBorder: Border.all(color: textColor),
-                  btnBackGroundColor: backGroundColor,
-                  btnChild: Text(
-                    "Register",
-                    style: textMedium,
-                  ),
-                  btnOnPressed: () {}),
+              // Button(
+              //     btnWidth: Get.width,
+              //     btnBorder: Border.all(color: textColor),
+              //     btnBackGroundColor: backGroundColor,
+              //     btnChild: Text(
+              //       "Register",
+              //       style: textMedium,
+              //     ),
+              //     btnOnPressed: () {}),
             ],
           )),
     ));

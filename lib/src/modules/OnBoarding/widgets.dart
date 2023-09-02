@@ -4,7 +4,12 @@ import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 
 Widget voipMaxBanner() {
-  return Image.asset("assets/onB_voipMax.png");
+  return SizedBox(
+    height: Get.height *.35,
+    child: Hero(
+      tag: "onB_voipMax",
+       child: Image.asset("assets/onB_voipMax.png",filterQuality: FilterQuality.high,fit: BoxFit.contain,)),
+  );
 }
 
 Widget voipMaxTitle() {

@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: "VoipMax",
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.ON_BOARDING,
+      initialRoute: Routes.SPLASH,
       getPages: AppPages.pages,
     );
   }

@@ -31,20 +31,15 @@ Widget backBtn() {
 }
 
 Widget voipMaxLogo() {
-  return Container(
-    decoration:
-        const BoxDecoration(shape: BoxShape.circle, color: hintBackGroundColor),
-    padding: EdgeInsets.all(10),
-    child: Container(
-        margin: EdgeInsets.all(Get.height * .02),
-        height: Get.height * .07,
-        child: Hero(
-          tag: "onB_logo",
-          child: Image.asset(
-            "assets/onB_logo.png",
-            fit: BoxFit.contain,
-          ),
-        )),
+  return SizedBox(
+    height: Get.height * .35,
+    child: Hero(
+      tag: "onB_voipMax",
+      child: Image.asset(
+        "assets/onB_voipMax.png",
+        fit: BoxFit.contain,
+      ),
+    ),
   );
 }
 
@@ -72,15 +67,15 @@ Widget loginTitle() {
 Widget userNameField() {
   return Column(
     children: [
-      Row(
-        children: [
-          Text(
-            "Username",
-            style: textMedium,
-          )
-        ],
-      ),
-      spY(10),
+      // Row(
+      //   children: [
+      //     Text(
+      //       "Username",
+      //       style: textMedium,
+      //     )
+      //   ],
+      // ),
+      // spY(10),
       Container(
         width: Get.width,
         decoration: BoxDecoration(
@@ -90,7 +85,7 @@ Widget userNameField() {
         child: TextField(
           decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: "Enter your username",
+              hintText: "Username",
               hintStyle: textMedium.copyWith(color: hintColor)),
         ),
       )
@@ -101,15 +96,15 @@ Widget userNameField() {
 Widget passwordField() {
   return Column(
     children: [
-      Row(
-        children: [
-          Text(
-            "Password",
-            style: textMedium,
-          )
-        ],
-      ),
-      spY(10),
+      // Row(
+      //   children: [
+      //     Text(
+      //       "Password",
+      //       style: textMedium,
+      //     )
+      //   ],
+      // ),
+      // spY(10),
       Container(
         width: Get.width,
         decoration: BoxDecoration(
@@ -119,7 +114,7 @@ Widget passwordField() {
         child: TextField(
           decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: "Enter password",
+              hintText: "Password",
               hintStyle: textMedium.copyWith(color: hintColor)),
         ),
       )
