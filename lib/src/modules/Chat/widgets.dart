@@ -34,7 +34,7 @@ Widget chatAppBar() {
                     children: [
                       Icon(Icons.search),
                       spX(10),
-                      Icon(Icons.search),
+                      Icon(Icons.more_vert_rounded),
                       // Icon(Icons.)
                     ],
                   ),
