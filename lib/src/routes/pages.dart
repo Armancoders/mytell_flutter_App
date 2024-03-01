@@ -1,5 +1,7 @@
 
 import 'package:get/route_manager.dart';
+import 'package:voipmax/src/modules/Calls/incoming.dart';
+import 'package:voipmax/src/modules/Calls/outgoing.dart';
 import 'package:voipmax/src/modules/Chat/chat.dart';
 import 'package:voipmax/src/modules/Messages/messages.dart';
 import 'package:voipmax/src/modules/Contact/contact.dart';
@@ -22,5 +24,7 @@ class AppPages {
     GetPage(name: Routes.CONTACT, page: ()=>  const Contact()),
     GetPage(name: Routes.MESSAGES, page: ()=>  const MessagesScreen()),
     GetPage(name: Routes.CHAT, page: ()=>  const ChatScreen()),
+    GetPage(name: Routes.INCOMING_CALL, page: ()=>  const IncomingCallScreen()),
+    GetPage(name: Routes.OUTGOING_CALL, page: ()=>  const OutGoingCallScreen()),
   ];
 }
