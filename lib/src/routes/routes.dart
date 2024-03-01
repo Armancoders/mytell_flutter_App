@@ -9,5 +9,7 @@ class Routes{
   static const CONTACT = "/contact";
   static const MESSAGES = "/messages";
   static const CHAT = "/chat";
+  static const INCOMING_CALL = "/incoming_call";
+  static const OUTGOING_CALL = "/outgoing_call";
 
 }
