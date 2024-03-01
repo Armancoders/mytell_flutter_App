@@ -76,7 +76,10 @@ Widget chatBody() {
     color: hintBackGroundColor,
     height: Get.height,
     child: Center(
-      child: Text("messages holder \n here will be implemented Soon.",textAlign: TextAlign.center,),
+      child: Text(
+        "messages holder \n here will be implemented Soon.",
+        textAlign: TextAlign.center,
+      ),
     ),
   );
 }
@@ -91,7 +94,10 @@ Widget chatTextField() {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.add,color: muteColor,),
+            const Icon(
+              Icons.add,
+              color: muteColor,
+            ),
             //field
             Expanded(
               child: Padding(
@@ -104,15 +110,17 @@ Widget chatTextField() {
                       borderRadius: BorderRadius.circular(Get.width * .06)),
                   child: TextField(
                     decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Type a message",
-                      hintStyle: textSmall.copyWith(color: hintColor)
-                    ),
+                        border: InputBorder.none,
+                        hintText: "Type a message",
+                        hintStyle: textSmall.copyWith(color: hintColor)),
                   ),
                 ),
               ),
             ),
-           const Icon(Icons.send,color: Colors.blue,),
+            const Icon(
+              Icons.send,
+              color: Colors.blue,
+            ),
           ],
         )),
   );
