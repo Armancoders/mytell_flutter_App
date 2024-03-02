@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "607760043187",
+    "project_id": "mytell-c2438",
+    "storage_bucket": "mytell-c2438.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607760043187:android:906d70e2768207f2ae34c6",
+        "android_client_info": {
+          "package_name": "com.example.voipmax"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmZnPOmorvBxV3p-hwPNvFtYsFhV1VfZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
