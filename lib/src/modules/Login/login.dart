@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/login_bloc.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 import 'package:voipmax/src/modules/Login/widgets.dart';
 
 import '../../component/button.dart';
 import '../../core/theme/color_theme.dart';
 import '../../core/theme/dimensions.dart';
-import '../../routes/routes.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    LoginBloc loginController = Get.put(LoginBloc());
     return Scaffold(
         body: SafeArea(
       // top: true,
@@ -25,7 +26,8 @@ class LoginScreen extends StatelessWidget {
           width: Get.width,
           color: backGroundColor,
           child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+            physics:
+                ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -41,18 +43,21 @@ class LoginScreen extends StatelessWidget {
                 forgotPass(),
                 spY(Get.height * .04),
                 Hero(
-                  tag: "btn",
-                  child: Button(
-                      btnWidth: Get.width,
-                      btnBackGroundColor: primaryColor,
-                      btnChild: Text(
-                        "Login",
-                        style: textMedium.copyWith(color: backGroundColor),
-                      ),
-                      btnOnPressed: () {
-                        Get.toNamed(Routes.HOME);
-                      }),
-                )
+                    tag: "btn",
+                    child: Obx(
+                      () => Button(
+                          isLoad: loginController.logging.value,
+                          btnWidth: Get.width,
+                          btnBackGroundColor: primaryColor,
+                          btnChild: Text(
+                            "Login",
+                            style: textMedium.copyWith(color: backGroundColor),
+                          ),
+                          btnOnPressed: () {
+                            loginController.login();
+                            // Get.toNamed(Routes.HOME);
+                          }),
+                    ))
                 // spY(Get.height * .02),
                 // divider(),
                 // spY(Get.height * .02),

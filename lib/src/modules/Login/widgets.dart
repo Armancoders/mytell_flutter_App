@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/login_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
@@ -15,10 +16,7 @@ Widget backBtn() {
           padding: EdgeInsets.all(6),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: hintColor,
-                width: .5
-              )),
+              border: Border.all(color: hintColor, width: .5)),
           child: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: textColor,
@@ -65,17 +63,9 @@ Widget loginTitle() {
 }
 
 Widget userNameField() {
+  LoginBloc loginController = Get.find();
   return Column(
     children: [
-      // Row(
-      //   children: [
-      //     Text(
-      //       "Username",
-      //       style: textMedium,
-      //     )
-      //   ],
-      // ),
-      // spY(10),
       Container(
         width: Get.width,
         decoration: BoxDecoration(
@@ -83,6 +73,7 @@ Widget userNameField() {
             borderRadius: BorderRadius.circular(Get.width * .08)),
         padding: EdgeInsets.symmetric(horizontal: Get.width * .05, vertical: 2),
         child: TextField(
+          controller: loginController.userNameController,
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: "Username",
@@ -94,17 +85,9 @@ Widget userNameField() {
 }
 
 Widget passwordField() {
+  LoginBloc loginController = Get.find();
   return Column(
     children: [
-      // Row(
-      //   children: [
-      //     Text(
-      //       "Password",
-      //       style: textMedium,
-      //     )
-      //   ],
-      // ),
-      // spY(10),
       Container(
         width: Get.width,
         decoration: BoxDecoration(
@@ -112,6 +95,7 @@ Widget passwordField() {
             borderRadius: BorderRadius.circular(Get.width * .08)),
         padding: EdgeInsets.symmetric(horizontal: Get.width * .05, vertical: 2),
         child: TextField(
+          controller: loginController.passwordController,
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: "Password",
@@ -148,13 +132,16 @@ Widget divider() {
         color: backGroundColor,
         padding: EdgeInsets.symmetric(horizontal: Get.width * .03),
         // margin: EdgeInsets.symmetric(horizontal: Get.w),
-        child: Text("Or Login with",style: textSmall.copyWith(color: hintColor),),
+        child: Text(
+          "Or Login with",
+          style: textSmall.copyWith(color: hintColor),
+        ),
       )
     ],
   );
 }
 
-Widget loginOptions(){
+Widget loginOptions() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -162,12 +149,8 @@ Widget loginOptions(){
         width: Get.width * .4,
         padding: EdgeInsets.symmetric(vertical: Get.height * .02),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Get.width * .08),
-          border: Border.all(
-            color: hintColor,
-            width: .5
-          )
-        ),
+            borderRadius: BorderRadius.circular(Get.width * .08),
+            border: Border.all(color: hintColor, width: .5)),
         child: Center(
           child: Text("F"),
         ),
@@ -176,12 +159,8 @@ Widget loginOptions(){
         width: Get.width * .4,
         padding: EdgeInsets.symmetric(vertical: Get.height * .02),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Get.width * .08),
-          border: Border.all(
-            color: hintColor,
-            width: .5
-          )
-        ),
+            borderRadius: BorderRadius.circular(Get.width * .08),
+            border: Border.all(color: hintColor, width: .5)),
         child: Center(
           child: Text("G"),
         ),
@@ -190,17 +169,14 @@ Widget loginOptions(){
   );
 }
 
-Widget register(){
-  return Text.rich(
-    TextSpan(
+Widget register() {
+  return Text.rich(TextSpan(
       text: "Don't hav an account?",
       style: textSmall.copyWith(color: hintColor),
       children: [
         TextSpan(
-          text: " Register",
-          style: textSmall.copyWith(color: primaryColor,fontWeight: FontWeight.bold)
-        )
-      ]
-    )
-  );
+            text: " Register",
+            style: textSmall.copyWith(
+                color: primaryColor, fontWeight: FontWeight.bold))
+      ]));
 }
