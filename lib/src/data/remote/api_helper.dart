@@ -6,7 +6,7 @@ import 'package:voipmax/src/data/models/sip_server_model.dart';
 import 'package:voipmax/src/repo.dart';
 
 class AipHelper extends Bloc {
-  MyTelRepo repo = MyTelRepo();
+  // MyTelRepo repo = MyTelRepo();
   final _baseUrl = "https://core.mytell.org";
 
   static Future<SIPServerModel?> authenticateDevice(
@@ -21,12 +21,12 @@ class AipHelper extends Bloc {
     };
 
     var body = {
-      "imei": MyTelRepo().imei ?? "",
-      // "imei": "35160581066102601",
-      "password": password,
-      // "password": "Missani.3018",
-      "username": userName,
-      // "username": "nima@webrtc.ertebaat.com"
+      // "imei": MyTelRepo().imei ?? "",
+      "imei": "35160581066102601",
+      // "password": password,
+      "password": "Missani.3018",
+      // "username": userName,
+      "username": "nima@webrtc.ertebaat.com"
     };
 
     try {
@@ -45,5 +45,32 @@ class AipHelper extends Bloc {
     }
 
     return sipServer;
+  }
+
+  static Future<void> deviceStatus({
+    required String status,
+  }) async {
+    var endPoint = "/device_status/";
+
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+      "X-Api-Token": MytelValues.apiKey
+    };
+
+    var body = {
+      "extension":
+          "${MyTelRepo().sipServer?.data?.extension ?? ""}@${MyTelRepo().sipServer?.data?.wssDomain}",
+      "imei": "35160581066102601",
+      "status": status,
+      "token_push": MyTelRepo().fcmToken
+    };
+
+    try {
+      await http.post(Uri.parse("${AipHelper()._baseUrl}$endPoint"),
+          body: json.encode(body), headers: headers);
+    } catch (e) {
+      print(e);
+    }
   }
 }

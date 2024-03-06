@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/call_bloc.dart';
 import 'package:voipmax/src/bloc/splash_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
@@ -14,9 +15,10 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(CallBloc(), permanent: true);
     SplashScreenBloc controller = Get.put(SplashScreenBloc(), permanent: true);
-    Get.put(MyTelFirebaseServices(), permanent: true);
     Get.put(MyTelRepo(), permanent: true);
+    Get.put(MyTelFirebaseServices(), permanent: true);
     return Scaffold(
       body: Container(
           height: Get.height,

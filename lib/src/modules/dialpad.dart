@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dialpad/flutter_dialpad.dart';
 import 'package:get/get.dart';
+import 'package:sip_ua/sip_ua.dart';
+import 'package:voipmax/src/bloc/dialpad_bloc.dart';
 
 import '../core/theme/color_theme.dart';
 
 class DialPadScreen extends StatelessWidget {
-  const DialPadScreen({super.key});
+  final SIPUAHelper? sipHelper;
+  const DialPadScreen({super.key, this.sipHelper});
 
   @override
   Widget build(BuildContext context) {
+    var dialPadController = Get.put(DialPadBloc());
     return Scaffold(
         body: SafeArea(
-          top: false,
+      top: false,
       child: Container(
         padding: EdgeInsets.only(
           top: Get.height * .15,
@@ -29,6 +33,7 @@ class DialPadScreen extends StatelessWidget {
           dialButtonColor: dialColor,
           makeCall: (number) {
             print(number);
+            dialPadController.makeCall(true);
           },
         ),
       ),

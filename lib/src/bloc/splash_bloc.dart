@@ -1,19 +1,19 @@
-
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 
-class SplashScreenBloc extends Bloc{
+class SplashScreenBloc extends Bloc {
   var animationStarted = false.obs;
+  // ignore: unused_field
+  // final _sipController = Get.put(SIPBloc(), permanent: true);
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     startAnimation();
   }
 
-  startAnimation(){
+  startAnimation() {
     Future.delayed(const Duration(milliseconds: 500))
-          .then((value) => animationStarted.value = true);
+        .then((value) => animationStarted.value = true);
   }
 }
