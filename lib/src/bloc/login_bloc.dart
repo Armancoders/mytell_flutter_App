@@ -12,32 +12,32 @@ class LoginBloc extends Bloc {
   TextEditingController passwordController = TextEditingController();
   RxBool logging = false.obs;
   Future<void> login() async {
-    // if (userNameController.text.trim().isEmpty) {
-    //   Get.snackbar("", "",
-    //       backgroundColor: Colors.redAccent,
-    //       titleText: Text(
-    //         "Error",
-    //         style: textTitleMedium.copyWith(color: Colors.white),
-    //       ),
-    //       messageText: Text(
-    //         "Please Enter your Username",
-    //         style: textMedium.copyWith(color: Colors.white),
-    //       ));
-    //   return;
-    // }
-    // if (passwordController.text.trim().isEmpty) {
-    //   Get.snackbar("", "",
-    //       backgroundColor: Colors.redAccent,
-    //       titleText: Text(
-    //         "Error",
-    //         style: textTitleMedium.copyWith(color: Colors.white),
-    //       ),
-    //       messageText: Text(
-    //         "Please Enter your Password",
-    //         style: textMedium.copyWith(color: Colors.white),
-    //       ));
-    //   return;
-    // }
+    if (userNameController.text.trim().isEmpty) {
+      Get.snackbar("", "",
+          backgroundColor: Colors.redAccent,
+          titleText: Text(
+            "Error",
+            style: textTitleMedium.copyWith(color: Colors.white),
+          ),
+          messageText: Text(
+            "Please Enter your Username",
+            style: textMedium.copyWith(color: Colors.white),
+          ));
+      return;
+    }
+    if (passwordController.text.trim().isEmpty) {
+      Get.snackbar("", "",
+          backgroundColor: Colors.redAccent,
+          titleText: Text(
+            "Error",
+            style: textTitleMedium.copyWith(color: Colors.white),
+          ),
+          messageText: Text(
+            "Please Enter your Password",
+            style: textMedium.copyWith(color: Colors.white),
+          ));
+      return;
+    }
     logging.value = true;
     await AipHelper.authenticateDevice(
             userName: userNameController.text,
