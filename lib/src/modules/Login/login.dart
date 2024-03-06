@@ -31,6 +31,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                spY(Get.height * .04),
                 backBtn(),
                 voipMaxLogo(),
                 spY(Get.height * .04),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:voipmax/src/bloc/login_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
+import 'package:voipmax/src/repo.dart';
 
 Widget backBtn() {
   return Row(
@@ -42,7 +45,9 @@ Widget voipMaxLogo() {
 }
 
 Widget loginTitle() {
+  MyTelRepo repo = MyTelRepo();
   return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +62,16 @@ Widget loginTitle() {
             style: textMedium.copyWith(color: hintColor),
           )
         ],
-      )
+      ),
+      GestureDetector(
+        onTap: () {
+          Share.share("Hello, my unique id is: ${repo.uniqueDeviceId ?? " "}");
+        },
+        child: const Icon(
+          Icons.qr_code_2,
+          size: 40,
+        ),
+      ),
     ],
   );
 }
