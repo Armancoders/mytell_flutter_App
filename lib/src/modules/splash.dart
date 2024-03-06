@@ -4,6 +4,7 @@ import 'package:voipmax/src/bloc/splash_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/data/services/firebase_service.dart';
+import 'package:voipmax/src/repo.dart';
 
 import '../core/theme/text_theme.dart';
 import '../routes/routes.dart';
@@ -15,6 +16,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SplashScreenBloc controller = Get.put(SplashScreenBloc(), permanent: true);
     Get.put(MyTelFirebaseServices(), permanent: true);
+    Get.put(MyTelRepo(), permanent: true);
     return Scaffold(
       body: Container(
           height: Get.height,
