@@ -125,6 +125,13 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     }
   }
 
+  void toggleSpeaker() {
+    if (_localStream != null) {
+      speakerOn.value = !speakerOn.value;
+      _localStream!.getAudioTracks()[0].enableSpeakerphone(speakerOn.value);
+    }
+  }
+
   void showIncomeCall({required String caller, required String callee}) async {
     CallKitParams callKitParams = CallKitParams(
       id: const Uuid().v4(),

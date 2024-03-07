@@ -113,8 +113,15 @@ class CallActionButtons extends StatelessWidget {
                 ),
                 buttonBG(const Icon(Icons.dialpad, color: backGroundColor),
                     Colors.white.withOpacity(.2)),
-                buttonBG(const Icon(Icons.speaker, color: backGroundColor),
-                    Colors.white.withOpacity(.2))
+                GestureDetector(
+                  onTap: () {
+                    callController.toggleSpeaker();
+                  },
+                  child: buttonBG(
+                      const Icon(Icons.speaker, color: backGroundColor),
+                      Colors.white.withOpacity(
+                          callController.speakerOn.value ? .7 : .2)),
+                )
               ],
             ),
             spY(10),
