@@ -31,7 +31,7 @@ class SIPBloc extends Bloc {
         // uri: "1000@webrtc.ertebaat.com",
         uri:
             "${repo.sipServer?.data?.extension ?? ""}@${repo.sipServer?.data?.wssDomain}",
-        displayName: "Navid");
+        displayName: repo.sipServer?.data?.extension ?? "");
   }
 
   makeCall([bool voiceOnly = false, String? dest]) {
