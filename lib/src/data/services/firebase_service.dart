@@ -78,14 +78,19 @@ class MyTelFirebaseServices extends Bloc {
   }
 
   Future init() async {
+    final String? pushNotifToken;
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
     // FirebaseMessaging.onBackgroundMessage(_handleMessage);
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    repo.fcmToken = fcmToken;
-    print("fcmToken : $fcmToken");
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      pushNotifToken = await FirebaseMessaging.instance.getToken();
+    } else {
+      pushNotifToken = await FirebaseMessaging.instance.getAPNSToken();
+    }
+    repo.fcmToken = pushNotifToken;
+    print("fcmToken : $pushNotifToken");
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
