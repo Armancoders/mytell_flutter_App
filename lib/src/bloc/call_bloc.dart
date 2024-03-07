@@ -57,7 +57,7 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   }
 
   onHangUp() {
-    // callStateController.hangup({'status_code': 603});
+    callStateController?.hangup({'status_code': 603});
     _timer.cancel();
     timeLabel.value = '00:00';
     _cleanUp();
@@ -169,6 +169,7 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
         ringtonePath: 'system_ringtone_default',
       ),
     );
+
     await FlutterCallkitIncoming.showCallkitIncoming(callKitParams);
   }
 
