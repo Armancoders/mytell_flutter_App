@@ -44,8 +44,8 @@ class SIPBloc extends Bloc {
     callController.callStateController = call;
     switch (call.state) {
       case CallStateEnum.STREAM:
-        if (callController.localRenderer == null ||
-            callController.remoteRenderer == null) {
+        if (callController.localRenderer != null ||
+            callController.remoteRenderer != null) {
           await callController.initRenderers();
         }
         callController.callOnStreams(state);
