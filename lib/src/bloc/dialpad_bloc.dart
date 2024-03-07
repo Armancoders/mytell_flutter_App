@@ -7,8 +7,8 @@ class DialPadBloc extends Bloc {
   // final SIPBloc _sipController = Get.find();
   final _sipController = Get.put(SIPBloc(), permanent: true);
 
-  Future makeCall([bool voiceOnly = false]) async {
-    _sipController.makeCall(voiceOnly);
+  Future makeCall([bool voiceOnly = false, String? dest]) async {
+    _sipController.makeCall(voiceOnly, dest);
   }
 
   @override

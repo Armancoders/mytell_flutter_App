@@ -33,7 +33,7 @@ class DialPadScreen extends StatelessWidget {
           dialButtonColor: dialColor,
           makeCall: (number) {
             print(number);
-            dialPadController.makeCall(true);
+            dialPadController.makeCall(true, number);
           },
         ),
       ),

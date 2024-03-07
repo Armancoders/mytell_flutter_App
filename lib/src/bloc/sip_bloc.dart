@@ -34,9 +34,9 @@ class SIPBloc extends Bloc {
         displayName: "Navid");
   }
 
-  makeCall([bool voiceOnly = false]) {
+  makeCall([bool voiceOnly = false, String? dest]) {
     callController.isOnlyVoice.value = voiceOnly;
-    _sipProvider.makeCall(voiceOnly);
+    _sipProvider.makeCall(voiceOnly, dest);
   }
 
   onCallStateChanged(Call call, CallState state) async {
@@ -66,6 +66,10 @@ class SIPBloc extends Bloc {
       case CallStateEnum.UNHOLD:
       case CallStateEnum.NONE:
       case CallStateEnum.CALL_INITIATION:
+        Get.toNamed(Routes.OUTGOING_CALL);
+        await callController.initRenderers();
+        callController.callOnStreams(state);
+        break;
       case CallStateEnum.REFER:
         break;
     }
