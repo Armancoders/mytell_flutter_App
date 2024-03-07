@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as webRtc;
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -33,10 +32,13 @@ class SIPProvider extends Bloc implements SipUaHelperListener {
 
   Future makeCall([bool voiceOnly = false, String? dest]) async {
     try {
-      if (defaultTargetPlatform == TargetPlatform.android ||
-          defaultTargetPlatform == TargetPlatform.iOS) {
+      if (await Permission.microphone.status != PermissionStatus.granted) {
         await Permission.microphone.request();
-        await Permission.camera.request();
+      }
+      if (!voiceOnly) {
+        if (await Permission.microphone.status != PermissionStatus.granted) {
+          await Permission.camera.request();
+        }
       }
       final mediaConstraints = <String, dynamic>{
         'audio': true,
