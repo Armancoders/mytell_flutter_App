@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDjK4b2HyAqTuEsQde8zYi4zn7VSiy-yS8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>607760043187</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.voipmax</string>
+	<key>PROJECT_ID</key>
+	<string>mytell-c2438</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mytell-c2438.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:607760043187:ios:8161ab6cd60aea35ae34c6</string>
+</dict>
+</plist>
