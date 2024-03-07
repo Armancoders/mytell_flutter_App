@@ -44,8 +44,10 @@ class SIPBloc extends Bloc {
     callController.callStateController = call;
     switch (call.state) {
       case CallStateEnum.STREAM:
-        Get.toNamed(Routes.OUTGOING_CALL);
-        await callController.initRenderers();
+        if (callController.localRenderer == null ||
+            callController.remoteRenderer == null) {
+          await callController.initRenderers();
+        }
         callController.callOnStreams(state);
         break;
       case CallStateEnum.ENDED:
@@ -68,7 +70,6 @@ class SIPBloc extends Bloc {
       case CallStateEnum.CALL_INITIATION:
         Get.toNamed(Routes.OUTGOING_CALL);
         await callController.initRenderers();
-        callController.callOnStreams(state);
         break;
       case CallStateEnum.REFER:
         break;
