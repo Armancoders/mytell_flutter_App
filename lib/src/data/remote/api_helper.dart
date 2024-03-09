@@ -61,7 +61,8 @@ class AipHelper extends Bloc {
     var body = {
       "extension":
           "${MyTelRepo().sipServer?.data?.extension ?? ""}@${MyTelRepo().sipServer?.data?.wssDomain}",
-      "imei": "35160581066102601",
+      // "imei": "35160581066102601",
+      "imei": MyTelRepo().uniqueDeviceId ?? "",
       "status": status,
       "token_push": MyTelRepo().fcmToken
     };
