@@ -46,6 +46,7 @@ class LoginBloc extends Bloc {
       if (value != null) {
         repo.sipServer = value;
         logging.value = false;
+        Get.put(SIPBloc(), permanent: true);
         Get.offAllNamed(Routes.HOME);
       } else {
         Get.snackbar("", "",
