@@ -196,6 +196,49 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   @override
   void onInit() {
     super.onInit();
+    FlutterCallkitIncoming.onEvent.listen((event) async {
+      switch (event!.event) {
+        case Event.actionCallIncoming:
+          break;
+        case Event.actionCallStart:
+          break;
+        case Event.actionCallAccept:
+          await initRenderers();
+          Get.toNamed(Routes.OUTGOING_CALL);
+          await FlutterCallkitIncoming.setCallConnected(currentCallUUID);
+          if (callStateController!.state != CallStateEnum.ENDED &&
+              callStateController!.state != CallStateEnum.FAILED) {
+            callStateController!.answer(
+                {"audio": isOnlyVoice.value, "video": !isOnlyVoice.value});
+          }
+          break;
+        case Event.actionCallDecline:
+          onHangUp();
+          break;
+        case Event.actionCallEnded:
+          onHangUp();
+          break;
+        case Event.actionCallTimeout:
+          onHangUp();
+          break;
+        case Event.actionCallCallback:
+          break;
+        case Event.actionCallToggleHold:
+          break;
+        case Event.actionCallToggleMute:
+          break;
+        case Event.actionCallToggleDmtf:
+          break;
+        case Event.actionCallToggleGroup:
+          break;
+        case Event.actionCallToggleAudioSession:
+          break;
+        case Event.actionDidUpdateDevicePushTokenVoip:
+          break;
+        case Event.actionCallCustom:
+          break;
+      }
+    });
   }
 
   @override
