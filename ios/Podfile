@@ -45,6 +45,7 @@ post_install do |installer|
         '$(inherited)',
         'PERMISSION_CAMERA=1',
         'PERMISSION_MICROPHONE=1',
+        'PERMISSION_BLUETOOTH=1',
       ]
       if config.base_configuration_reference.is_a? Xcodeproj::Project::Object::PBXFileReference
         xcconfig_path = config.base_configuration_reference.real_path
