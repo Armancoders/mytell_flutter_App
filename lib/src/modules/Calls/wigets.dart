@@ -167,8 +167,15 @@ class CallActionButtons extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                buttonBG(const Icon(Icons.add, color: backGroundColor),
-                    Colors.white.withOpacity(.2)),
+                GestureDetector(
+                  onTap: () {
+                    callController.toggleBluetooth();
+                  },
+                  child: buttonBG(
+                      const Icon(Icons.bluetooth, color: backGroundColor),
+                      Colors.white.withOpacity(
+                          callController.bluetoothOn.value ? .7 : .2)),
+                ),
                 GestureDetector(
                   onTap: () {
                     callController.handleHold();
