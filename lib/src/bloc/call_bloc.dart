@@ -55,10 +55,20 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     update();
   }
 
-  onHangUp() {
-    callStateController?.hangup({'status_code': 603});
-    _timer.cancel();
+  onHangUp() async {
+    if (callStateController!.state != CallStateEnum.ENDED &&
+        callStateController!.state != CallStateEnum.FAILED) {
+      callStateController?.hangup();
+    }
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
+    await FlutterCallkitIncoming.endCall(currentCallUUID);
+    // await FlutterCallkitIncoming.endAllCalls();
+
     timeLabel.value = '00:00';
+    _resetActionButtons();
     _cleanUp();
     Get.back();
   }
