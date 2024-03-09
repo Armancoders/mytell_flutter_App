@@ -1,16 +1,21 @@
 // ignore_for_file: unnecessary_nullable_for_final_variable_declarations, unused_field
 import 'dart:async';
 
+import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_callkit_incoming/entities/android_params.dart';
 import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
+import 'package:flutter_callkit_incoming/entities/entities.dart';
 import 'package:flutter_callkit_incoming/entities/ios_params.dart';
 import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:uuid/uuid.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
+import 'package:voipmax/src/routes/routes.dart';
 
 class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   late RTCVideoRenderer? localRenderer = RTCVideoRenderer();
@@ -25,7 +30,15 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   RxBool audioMuted = false.obs;
   RxBool videoMuted = false.obs;
   RxBool speakerOn = false.obs;
+  RxBool bluetoothOn = false.obs;
+  RxString connectedBluetoothDevice = "Not connected".obs;
   RxBool hold = false.obs;
+  String currentCallUUID = "";
+
+  int secondsElapsed = 0;
+  late int hours;
+  late int minutes;
+  late int seconds;
 
   Future<void> initRenderers() async {
     if (localRenderer != null) {
@@ -110,7 +123,11 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     }
   }
 
-  void muteAudio() {
+  void muteAudio({bool? mute}) {
+    if (mute != null) {
+      audioMuted.value = mute;
+      return;
+    }
     if (audioMuted.value) {
       audioMuted.value = false;
       callStateController!.unmute(true, false);
@@ -128,7 +145,11 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     }
   }
 
-  void handleHold() {
+  void handleHold({bool? doHold}) {
+    if (doHold != null) {
+      hold.value = doHold;
+      return;
+    }
     if (hold.value) {
       hold.value = false;
       callStateController!.unhold();
@@ -145,9 +166,42 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     }
   }
 
-  void showIncomeCall({required String caller, required String callee}) async {
+  void toggleBluetooth() async {
+    if (await Permission.bluetooth.status != PermissionStatus.granted) {
+      await Permission.bluetooth.request();
+    }
+    if (!bluetoothOn.value) {
+      BluetoothEnable.enableBluetooth;
+    }
+    runBluetoothListeners();
+  }
+
+  runBluetoothListeners() async {
+    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
+      print(state);
+      if (state == BluetoothAdapterState.on) {
+        bluetoothOn.value = true;
+        // usually start scanning, connecting, etc
+      } else {
+        bluetoothOn.value = false;
+        // show an error to the user, etc
+      }
+    });
+
+    // FlutterBluePlus.events.onConnectionStateChanged.listen((event) {
+    //   if (event.connectionState == BluetoothConnectionState.connected) {
+    //     connectedBluetoothDevice.value = event.device.platformName;
+    //   }
+    // });
+  }
+
+  void showIncomeCall({
+    required String caller,
+    required String callee,
+  }) async {
+    currentCallUUID = Uuid().v4();
     CallKitParams callKitParams = CallKitParams(
-      id: const Uuid().v4(),
+      id: currentCallUUID,
       nameCaller: callee,
       appName: 'My tel',
       // avatar: callee[0],
