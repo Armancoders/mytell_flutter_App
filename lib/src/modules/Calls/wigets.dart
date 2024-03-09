@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dialpad/flutter_dialpad.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:sip_ua/sip_ua.dart';
@@ -111,8 +112,46 @@ class CallActionButtons extends StatelessWidget {
                       Colors.white.withOpacity(
                           callController.audioMuted.value ? .7 : .2)),
                 ),
-                buttonBG(const Icon(Icons.dialpad, color: backGroundColor),
-                    Colors.white.withOpacity(.2)),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(Get.width * .12)),
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (_) {
+                          return SafeArea(
+                            child: Container(
+                              height: Get.height * .8,
+                              width: Get.width,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(Get.width * .5)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  DialPad(
+                                    hideSubtitle: true,
+                                    enableDtmf: true,
+                                    buttonColor: hintBackGroundColor,
+                                    backspaceButtonIconColor: hintColor,
+                                    dialButtonColor: dialColor,
+                                    makeCall: (number) {
+                                      print(number);
+                                      // dialPadController.makeCall(true, number);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  child: buttonBG(
+                      const Icon(Icons.dialpad, color: backGroundColor),
+                      Colors.white.withOpacity(.2)),
+                ),
                 GestureDetector(
                   onTap: () {
                     callController.toggleSpeaker();
