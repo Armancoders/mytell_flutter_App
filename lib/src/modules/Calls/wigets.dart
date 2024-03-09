@@ -183,9 +183,7 @@ class CallActionButtons extends StatelessWidget {
                       Colors.white
                           .withOpacity(callController.hold.value ? .7 : .2)),
                 ),
-                buttonBG(
-                    const Icon(Icons.perm_contact_calendar_outlined,
-                        color: backGroundColor),
+                buttonBG(const Icon(Icons.add_call, color: backGroundColor),
                     Colors.white.withOpacity(.2))
               ],
             )
