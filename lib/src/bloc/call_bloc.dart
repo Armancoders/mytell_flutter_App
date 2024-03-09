@@ -20,7 +20,7 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   RxString callStatus = "".obs;
   late Call? callStateController;
   RxBool isOnlyVoice = false.obs;
-  late Timer _timer;
+  Timer? _timer;
   RxString timeLabel = '00:00'.obs;
   RxBool audioMuted = false.obs;
   RxBool videoMuted = false.obs;
@@ -38,7 +38,6 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
 
   void callOnStreams(CallState event) async {
     MediaStream? stream = event.stream;
-    _startTimer();
     if (event.originator == 'local') {
       if (localRenderer != null) {
         localRenderer!.srcObject = stream;
@@ -73,18 +72,22 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     _localStream = null;
   }
 
-  void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      Duration duration = Duration(seconds: timer.tick);
-      // if (mounted) {
-      // setState(() {
-      timeLabel.value = [duration.inMinutes, duration.inSeconds]
-          .map((seg) => seg.remainder(60).toString().padLeft(2, '0'))
-          .join(':');
-      // });
-      // } else {
-      //   _timer.cancel();
-      // }
+  void _resetActionButtons() {
+    audioMuted.value = false;
+    videoMuted.value = false;
+    speakerOn.value = false;
+    hold.value = false;
+    connectedBluetoothDevice.value = "Not connected";
+  }
+
+  startTimer() async {
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      secondsElapsed++;
+      hours = secondsElapsed ~/ 3600;
+      minutes = (secondsElapsed % 3600) ~/ 60;
+      seconds = secondsElapsed % 60;
+      timeLabel.value =
+          '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     });
   }
 
