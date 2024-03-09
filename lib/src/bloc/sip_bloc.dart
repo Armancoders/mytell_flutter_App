@@ -64,12 +64,22 @@ class SIPBloc extends Bloc {
       case CallStateEnum.PROGRESS:
       case CallStateEnum.ACCEPTED:
       case CallStateEnum.CONFIRMED:
+        callController.startTimer();
       case CallStateEnum.HOLD:
       case CallStateEnum.UNHOLD:
+      // break;
       case CallStateEnum.NONE:
       case CallStateEnum.CALL_INITIATION:
-        Get.toNamed(Routes.OUTGOING_CALL);
+        if (callController.callStatus.value !=
+            CallStateEnum.CALL_INITIATION.name) return;
+        if (call.direction == 'INCOMING') {
+          callController.showIncomeCall(
+              caller: call.remote_display_name ?? "Unknown",
+              callee: call.remote_identity ?? "Unknown");
+          return;
+        }
         await callController.initRenderers();
+        Get.toNamed(Routes.OUTGOING_CALL);
         break;
       case CallStateEnum.REFER:
         break;
