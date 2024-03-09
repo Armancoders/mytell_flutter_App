@@ -62,13 +62,7 @@ class CallDetails extends StatelessWidget {
         ),
         Obx(
           () => Text(
-            callController.callStatus.value ==
-                    CallStateEnum.CONNECTING.toString()
-                ? CallStateEnum.CONNECTING.toString()
-                : callController.callStatus.value ==
-                        CallStateEnum.FAILED.toString()
-                    ? CallStateEnum.FAILED.toString()
-                    : callController.timeLabel.value,
+            "${callController.callStatus.value == CallStateEnum.FAILED.name || callController.callStatus.value == CallStateEnum.NONE.name ? "" : callController.timeLabel.value} - ${callController.callStatus.value}",
             style: textMedium.copyWith(color: backGroundColor),
           ),
         )
