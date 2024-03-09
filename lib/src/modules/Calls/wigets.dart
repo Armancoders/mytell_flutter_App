@@ -133,6 +133,9 @@ class CallActionButtons extends StatelessWidget {
                                     dialButtonColor: dialColor,
                                     makeCall: (number) {
                                       print(number);
+                                      callController.callStateController!
+                                          .refer(number);
+                                      Get.back();
                                       // dialPadController.makeCall(true, number);
                                     },
                                   ),
