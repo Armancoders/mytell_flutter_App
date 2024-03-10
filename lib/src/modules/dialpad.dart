@@ -25,16 +25,44 @@ class DialPadScreen extends StatelessWidget {
         height: Get.height,
         width: Get.width,
         color: backGroundColor,
-        child: DialPad(
-          hideSubtitle: true,
-          enableDtmf: true,
-          buttonColor: hintBackGroundColor,
-          backspaceButtonIconColor: hintColor,
-          dialButtonColor: dialColor,
-          makeCall: (number) {
-            print(number);
-            dialPadController.makeCall(true, number);
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Obx(() => Column(
+                  children: [
+                    dialPadController.sipController.registrationStatus.value ==
+                            MytelValues.deviceRegisteredStatus
+                        ? Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.circular(3)),
+                          )
+                        : Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(3)),
+                          ),
+                    Text(dialPadController
+                        .sipController.registrationStatus.value)
+                  ],
+                )),
+            DialPad(
+              hideSubtitle: true,
+              enableDtmf: true,
+              buttonColor: hintBackGroundColor,
+              backspaceButtonIconColor: hintColor,
+              dialButtonColor: dialColor,
+              makeCall: (number) {
+                print(number);
+                dialPadController.makeCall(true, number);
+              },
+            ),
+          ],
         ),
       ),
     ));
