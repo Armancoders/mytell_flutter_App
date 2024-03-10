@@ -3,6 +3,7 @@ import 'package:flutter_dialpad/flutter_dialpad.dart';
 import 'package:get/get.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:voipmax/src/bloc/dialpad_bloc.dart';
+import 'package:voipmax/src/core/values/values.dart';
 
 import '../core/theme/color_theme.dart';
 
@@ -18,7 +19,7 @@ class DialPadScreen extends StatelessWidget {
       top: false,
       child: Container(
         padding: EdgeInsets.only(
-          top: Get.height * .15,
+          top: Get.height * .11,
           left: Get.width * .06,
           right: Get.width * .06,
         ),
