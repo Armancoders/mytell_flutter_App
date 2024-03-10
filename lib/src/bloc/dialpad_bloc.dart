@@ -4,11 +4,11 @@ import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
 
 class DialPadBloc extends Bloc {
-  final SIPBloc _sipController = Get.find();
+  final SIPBloc sipController = Get.find();
   // final _sipController = Get.put(SIPBloc(), permanent: true);
 
   Future makeCall([bool voiceOnly = false, String? dest]) async {
-    _sipController.makeCall(voiceOnly, dest);
+    sipController.makeCall(voiceOnly, dest);
   }
 
   @override
