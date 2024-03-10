@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/call_bloc.dart';
+import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/bloc/splash_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/data/services/firebase_service.dart';
+import 'package:voipmax/src/data/services/foreground_service.dart';
 import 'package:voipmax/src/repo.dart';
 
 import '../core/theme/text_theme.dart';
@@ -15,7 +17,10 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(MyTellForeGroundService(), permanent: true);
     Get.put(CallBloc(), permanent: true);
+    Get.put(SIPBloc(), permanent: true);
+
     SplashScreenBloc controller = Get.put(SplashScreenBloc(), permanent: true);
     Get.put(MyTelRepo(), permanent: true);
     Get.put(MyTelFirebaseServices(), permanent: true);

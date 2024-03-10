@@ -5,6 +5,7 @@ import 'package:voipmax/src/bloc/call_bloc.dart';
 import 'package:voipmax/src/core/values/values.dart';
 import 'package:voipmax/src/data/provider/sip_provider.dart';
 import 'package:voipmax/src/data/remote/api_helper.dart';
+import 'package:voipmax/src/data/services/foreground_service.dart';
 import 'package:voipmax/src/repo.dart';
 import 'package:voipmax/src/routes/routes.dart';
 
@@ -13,25 +14,28 @@ class SIPBloc extends Bloc {
   RxString callState = "".obs;
   CallBloc callController = Get.find();
   MyTelRepo repo = MyTelRepo();
+  RxString registrationStatus = MytelValues.deviceNotRegisteredStatus.obs;
+  MyTellForeGroundService foreGroundService = Get.find();
 
   register() {
+    if (repo.sipServer == null) return;
     final Map<String, String> wsExtraHeaders = {
       "${repo.sipServer?.data?.stun?.replaceRange(repo.sipServer?.data?.stun?.indexOf(":") ?? 0, null, "")}":
           "${repo.sipServer?.data?.stun?.replaceRange(0, repo.sipServer?.data?.stun?.indexOf(":"), "")}"
     };
-    _sipProvider.sipRegister(
-        // webSocketUrl: "wss://webrtc.ertebaat.com:7443/",
-        webSocketUrl:
-            "wss://${repo.sipServer?.data?.wssDomain ?? ""}${repo.sipServer?.data?.wssPort.toString().isNotEmpty ?? false ? ":${repo.sipServer?.data?.wssPort.toString()}/" : ""}",
-        extraHeaders: wsExtraHeaders,
-        // authorizationUser: "1000",
-        authorizationUser: repo.sipServer?.data?.extension ?? "",
-        // password: "v2jL4Gk%%uBVEcbbcnL4",
-        password: repo.sipServer?.data?.password,
-        // uri: "1000@webrtc.ertebaat.com",
-        uri:
-            "${repo.sipServer?.data?.extension ?? ""}@${repo.sipServer?.data?.wssDomain}",
-        displayName: repo.sipServer?.data?.extension ?? "");
+    try {
+      _sipProvider.sipRegister(
+          webSocketUrl:
+              "wss://${repo.sipServer?.data?.wssDomain ?? ""}${repo.sipServer?.data?.wssPort.toString().isNotEmpty ?? false ? ":${repo.sipServer?.data?.wssPort.toString()}/" : ""}",
+          extraHeaders: wsExtraHeaders,
+          authorizationUser: repo.sipServer?.data?.extension ?? "",
+          password: repo.sipServer?.data?.password,
+          uri:
+              "${repo.sipServer?.data?.extension ?? ""}@${repo.sipServer?.data?.wssDomain}",
+          displayName: repo.sipServer?.data?.extension ?? "");
+    } catch (e) {
+      registrationStatus.value = MytelValues.deviceNotRegisteredStatus;
+    }
   }
 
   makeCall([bool voiceOnly = false, String? dest]) {
@@ -53,6 +57,7 @@ class SIPBloc extends Bloc {
       case CallStateEnum.ENDED:
       case CallStateEnum.FAILED:
         callController.onHangUp();
+        foreGroundService.stopService();
 
         ///Todo
         // await callController.initRenderers();
@@ -72,6 +77,8 @@ class SIPBloc extends Bloc {
       case CallStateEnum.CALL_INITIATION:
         if (callController.callStatus.value !=
             CallStateEnum.CALL_INITIATION.name) return;
+        foreGroundService.startForeGroundService();
+
         if (call.direction == 'INCOMING') {
           callController.showIncomeCall(
               caller: call.remote_display_name ?? "Unknown",
@@ -87,6 +94,9 @@ class SIPBloc extends Bloc {
   }
 
   Future<void> onRegisterStateChanged(RegistrationState state) async {
+    registrationStatus.value = state.state == RegistrationStateEnum.REGISTERED
+        ? MytelValues.deviceRegisteredStatus
+        : MytelValues.deviceNotRegisteredStatus;
     await AipHelper.deviceStatus(
         status: state.state == RegistrationStateEnum.REGISTERED
             ? MytelValues.deviceRegisteredStatus
