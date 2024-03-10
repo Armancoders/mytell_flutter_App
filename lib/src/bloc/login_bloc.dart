@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
+import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 import 'package:voipmax/src/data/remote/api_helper.dart';
 import 'package:voipmax/src/repo.dart';
@@ -11,7 +13,8 @@ class LoginBloc extends Bloc {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxBool logging = false.obs;
-  Future<void> login() async {
+  Future<void> login({bool? isPush = false}) async {
+    var prefs = await SharedPreferences.getInstance();
     if (userNameController.text.trim().isEmpty) {
       Get.snackbar("", "",
           backgroundColor: Colors.redAccent,
@@ -40,14 +43,24 @@ class LoginBloc extends Bloc {
     }
     logging.value = true;
     await AipHelper.authenticateDevice(
-            userName: userNameController.text,
-            password: passwordController.text)
-        .then((value) {
+            userName: userNameController.text.isNotEmpty
+                ? userNameController.text
+                : prefs.getString("userName") ?? "",
+            password: passwordController.text.isNotEmpty
+                ? passwordController.text
+                : prefs.getString("passWord") ?? "")
+        .then((value) async {
       if (value != null) {
         repo.sipServer = value;
         logging.value = false;
-        Get.put(SIPBloc(), permanent: true);
-        Get.offAllNamed(Routes.HOME);
+        SIPBloc sipBloc = Get.find();
+        sipBloc.register();
+
+        prefs.setString("userName", userNameController.text);
+        prefs.setString("passWord", passwordController.text);
+        if (!isPush!) {
+          Get.offAllNamed(Routes.HOME);
+        }
       } else {
         Get.snackbar("", "",
             backgroundColor: Colors.redAccent,
