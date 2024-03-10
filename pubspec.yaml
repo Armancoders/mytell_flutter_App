@@ -31,6 +31,7 @@ dependencies:
   uuid: ^3.0.7
   bluetooth_enable_fork: ^0.1.6
   flutter_blue_plus: ^1.31.16
+  flutter_background_service: ^5.0.5
 
 dev_dependencies:
   flutter_test:
