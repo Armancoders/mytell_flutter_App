@@ -59,6 +59,7 @@ class DialPadScreen extends StatelessWidget {
               backspaceButtonIconColor: hintColor,
               dialButtonColor: dialColor,
               makeCall: (number) {
+                if (number.isEmpty) return;
                 print(number);
                 dialPadController.makeCall(true, number);
               },
