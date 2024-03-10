@@ -5,7 +5,6 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
-import 'package:voipmax/src/bloc/call_bloc.dart';
 import 'package:voipmax/src/repo.dart';
 
 class MyTellForeGroundService extends Bloc {
@@ -29,28 +28,8 @@ class MyTellForeGroundService extends Bloc {
     service.on("stop_service").listen((event) {
       service.stopSelf();
     });
-    // MyTelRepo repo = MyTelRepo();
-
-    // CallBloc callController = CallBloc();
     DartPluginRegistrant.ensureInitialized();
     MyTellForeGroundService().localService = service;
-
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-
-    // flutterLocalNotificationsPlugin.show(
-    //   MyTellForeGroundService().notificationId,
-    //   "${repo.remoteUserDetails["caller"] ?? repo.remoteUserDetails["callee"] ?? ""}",
-    //   "${repo.remoteUserDetails["callee"] ?? ""}  -  ${callController.timeLabel.value}",
-    //   NotificationDetails(
-    //     android: AndroidNotificationDetails(
-    //       MyTellForeGroundService().notificationChannelId,
-    //       'MyTell foreGround',
-    //       icon: 'ic_bg_service_small',
-    //       ongoing: true,
-    //     ),
-    //   ),
-    // );
   }
 
   Future<void> initializeService() async {
@@ -85,12 +64,6 @@ class MyTellForeGroundService extends Bloc {
           ),
           iosConfiguration: IosConfiguration(autoStart: false),
         );
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    // initializeService();
   }
 
   static final MyTellForeGroundService _instance =
