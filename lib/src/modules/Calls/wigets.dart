@@ -59,7 +59,11 @@ class CallDetails extends StatelessWidget {
     return Column(
       children: [
         Text(
-          repo.remoteUserDetails["callee"] ?? "Unknown",
+          repo.remoteUserDetails["callee"].toString().isNotEmpty
+              ? repo.remoteUserDetails["callee"].toString()
+              : repo.remoteUserDetails["caller"].toString().isNotEmpty
+                  ? repo.remoteUserDetails["caller"] ?? "Unknown"
+                  : "Unknown",
           style: textTitleXLarge.copyWith(color: backGroundColor),
         ),
         Obx(
