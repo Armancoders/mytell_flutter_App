@@ -304,4 +304,8 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     localRenderer!.dispose();
     remoteRenderer!.dispose();
   }
+
+  static final CallBloc _instance = CallBloc.internal();
+  factory CallBloc() => _instance;
+  CallBloc.internal();
 }
