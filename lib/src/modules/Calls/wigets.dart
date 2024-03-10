@@ -11,6 +11,7 @@ import 'package:voipmax/src/bloc/call_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
+import 'package:voipmax/src/repo.dart';
 
 class BluredBackGrpund extends StatelessWidget {
   const BluredBackGrpund({super.key});
@@ -54,10 +55,11 @@ class CallDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CallBloc callController = Get.find();
+    MyTelRepo repo = MyTelRepo();
     return Column(
       children: [
         Text(
-          "Maya",
+          repo.remoteUserDetails["callee"] ?? "Unknown",
           style: textTitleXLarge.copyWith(color: backGroundColor),
         ),
         Obx(
