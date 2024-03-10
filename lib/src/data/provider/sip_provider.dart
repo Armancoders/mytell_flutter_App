@@ -93,6 +93,7 @@ class SIPProvider extends Bloc implements SipUaHelperListener {
       baseSipUaHelper.start(_settings);
     } catch (e) {
       print(e);
+      rethrow;
     }
     // _settings.
   }
