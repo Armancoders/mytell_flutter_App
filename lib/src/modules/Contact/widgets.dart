@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/contact_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
+import 'package:voipmax/src/data/models/extensions.dart';
 
-Widget contactItemBody() {
+Widget contactItemBody(ExtensionsData? ex) {
+  ContactBloc _controller = Get.put(ContactBloc());
   return Container(
     margin: EdgeInsets.only(bottom: Get.height * .015, top: 5),
     child: Column(
@@ -32,14 +36,14 @@ Widget contactItemBody() {
                   SizedBox(
                     width: Get.width * .5,
                     child: Text(
-                      "Name Holder",
+                      ex?.extension ?? "Unknown",
                       style: textSmall,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   spY(5),
                   Text(
-                    "pNumber Holder",
+                    ex?.status ?? "offline",
                     style: textSmall.copyWith(color: hintColor),
                   ),
                 ],
@@ -48,9 +52,17 @@ Widget contactItemBody() {
 
             Row(
               children: [
-                const Icon(
-                  Icons.phone,
-                  color: Colors.green,
+                GestureDetector(
+                  onTap: () {
+                    _controller.makeCall(
+                        true,
+                        ex?.extension!.replaceRange(
+                            ex.extension!.indexOf("@"), null, ""));
+                  },
+                  child: const Icon(
+                    Icons.phone,
+                    color: Colors.green,
+                  ),
                 ),
                 spX(10),
                 const Icon(

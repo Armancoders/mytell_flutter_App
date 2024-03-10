@@ -74,4 +74,31 @@ class AipHelper extends Bloc {
       print(e);
     }
   }
+
+  static Future<Extensions?> extensionsStatus({
+    required String domain,
+  }) async {
+    var endPoint = "/extensions_status/?domain=$domain";
+    Extensions? extentions;
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+      "X-Api-Token": MytelValues.apiKey
+    };
+
+    try {
+      var response = await http
+          .get(Uri.parse("${AipHelper()._baseUrl}$endPoint"), headers: headers);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        extentions = Extensions.fromJson(data);
+      } else {
+        extentions = null;
+      }
+    } catch (e) {
+      print(e);
+      extentions = null;
+    }
+    return extentions;
+  }
 }

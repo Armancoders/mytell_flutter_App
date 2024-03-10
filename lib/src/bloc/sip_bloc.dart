@@ -75,6 +75,7 @@ class SIPBloc extends Bloc {
         break;
       case CallStateEnum.CONFIRMED:
         callController.startTimer();
+        break;
       case CallStateEnum.HOLD:
         break;
       case CallStateEnum.UNHOLD:
