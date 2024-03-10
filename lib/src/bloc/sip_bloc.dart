@@ -57,27 +57,38 @@ class SIPBloc extends Bloc {
       case CallStateEnum.ENDED:
       case CallStateEnum.FAILED:
         callController.onHangUp();
-        foreGroundService.stopService();
+        await foreGroundService.stopService();
 
         ///Todo
         // await callController.initRenderers();
         // callController.callOnStreams(state);
         break;
       case CallStateEnum.UNMUTED:
+        break;
       case CallStateEnum.MUTED:
+        break;
       case CallStateEnum.CONNECTING:
+        break;
       case CallStateEnum.PROGRESS:
+        break;
       case CallStateEnum.ACCEPTED:
+        break;
       case CallStateEnum.CONFIRMED:
         callController.startTimer();
       case CallStateEnum.HOLD:
+        break;
       case CallStateEnum.UNHOLD:
-      // break;
+        break;
       case CallStateEnum.NONE:
+        break;
       case CallStateEnum.CALL_INITIATION:
+        repo.remoteUserDetails = {
+          "callee": call.remote_display_name,
+          "caller": call.remote_identity
+        };
+        foreGroundService.startForeGroundService();
         if (callController.callStatus.value !=
             CallStateEnum.CALL_INITIATION.name) return;
-        foreGroundService.startForeGroundService();
 
         if (call.direction == 'INCOMING') {
           callController.showIncomeCall(

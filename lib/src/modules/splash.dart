@@ -17,12 +17,12 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(MyTellForeGroundService(), permanent: true);
+    Get.put(MyTelRepo(), permanent: true);
     Get.put(CallBloc(), permanent: true);
+    Get.put(MyTellForeGroundService(), permanent: true);
     Get.put(SIPBloc(), permanent: true);
 
     SplashScreenBloc controller = Get.put(SplashScreenBloc(), permanent: true);
-    Get.put(MyTelRepo(), permanent: true);
     Get.put(MyTelFirebaseServices(), permanent: true);
     return Scaffold(
       body: Container(

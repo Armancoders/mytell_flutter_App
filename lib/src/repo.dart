@@ -7,11 +7,12 @@ class MyTelRepo extends Bloc {
   SIPServerModel? sipServer;
   String? uniqueDeviceId;
   String? fcmToken;
-
+  var remoteUserDetails = {};
   Future getIMEI() async {
     try {
       Permission.phone.request();
       uniqueDeviceId = await UniqueIdentifier.serial;
+      print(uniqueDeviceId);
     } catch (e) {
       uniqueDeviceId = null;
     }
