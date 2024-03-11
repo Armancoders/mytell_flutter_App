@@ -3,11 +3,7 @@ import 'dart:async';
 
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_callkit_incoming/entities/android_params.dart';
-import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
 import 'package:flutter_callkit_incoming/entities/entities.dart';
-import 'package:flutter_callkit_incoming/entities/ios_params.dart';
-import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
@@ -15,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:uuid/uuid.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
+import 'package:voipmax/src/repo.dart';
 import 'package:voipmax/src/routes/routes.dart';
 
 class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
@@ -39,6 +36,8 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   late int hours;
   late int minutes;
   late int seconds;
+
+  MyTelRepo repo = MyTelRepo();
 
   Future<void> initRenderers() async {
     if (localRenderer != null) {
@@ -248,6 +247,11 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     );
 
     await FlutterCallkitIncoming.showCallkitIncoming(callKitParams);
+  }
+
+  void saveRemoteUserDetails({required String callee, required String caller}) {
+    repo.remoteUserDetails = {"callee": callee, "caller": caller};
+    update();
   }
 
   @override

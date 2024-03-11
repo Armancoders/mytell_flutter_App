@@ -58,14 +58,22 @@ class CallDetails extends StatelessWidget {
     MyTelRepo repo = MyTelRepo();
     return Column(
       children: [
-        Text(
-          repo.remoteUserDetails["callee"].toString().isNotEmpty
-              ? repo.remoteUserDetails["callee"].toString()
-              : repo.remoteUserDetails["caller"].toString().isNotEmpty
-                  ? repo.remoteUserDetails["caller"] ?? "Unknown"
-                  : "Unknown",
-          style: textTitleXLarge.copyWith(color: backGroundColor),
-        ),
+        GetBuilder(
+            init: callController,
+            builder: (_) {
+              return Text(
+                repo.remoteUserDetails["callee"] != null &&
+                        repo.remoteUserDetails["callee"].toString().isNotEmpty
+                    ? repo.remoteUserDetails["callee"].toString()
+                    : repo.remoteUserDetails["caller"] != null &&
+                            repo.remoteUserDetails["caller"]
+                                .toString()
+                                .isNotEmpty
+                        ? repo.remoteUserDetails["caller"] ?? "Unknown"
+                        : "Unknown",
+                style: textTitleXLarge.copyWith(color: backGroundColor),
+              );
+            }),
         Obx(
           () => Text(
             "${callController.callStatus.value == CallStateEnum.FAILED.name || callController.callStatus.value == CallStateEnum.NONE.name ? "" : callController.timeLabel.value} - ${callController.callStatus.value}",

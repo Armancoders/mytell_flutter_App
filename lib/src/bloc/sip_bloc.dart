@@ -83,10 +83,9 @@ class SIPBloc extends Bloc {
       case CallStateEnum.NONE:
         break;
       case CallStateEnum.CALL_INITIATION:
-        repo.remoteUserDetails = {
-          "callee": call.remote_display_name,
-          "caller": call.remote_identity
-        };
+        callController.saveRemoteUserDetails(
+            callee: call.remote_display_name ?? "Unknown",
+            caller: call.remote_identity ?? "Unknown");
         if (callController.callStatus.value !=
             CallStateEnum.CALL_INITIATION.name) return;
         foreGroundService.startForeGroundService();
