@@ -87,10 +87,9 @@ class SIPBloc extends Bloc {
           "callee": call.remote_display_name,
           "caller": call.remote_identity
         };
-        foreGroundService.startForeGroundService();
         if (callController.callStatus.value !=
             CallStateEnum.CALL_INITIATION.name) return;
-
+        foreGroundService.startForeGroundService();
         if (call.direction == 'INCOMING') {
           callController.showIncomeCall(
               caller: call.remote_display_name ?? "Unknown",
