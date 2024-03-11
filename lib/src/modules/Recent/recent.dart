@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/recent_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/modules/Recent/widgets.dart';
@@ -9,6 +10,7 @@ class RecentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var recentController = Get.put(RecentCallsBloc());
     return Scaffold(
       body: Container(
         color: backGroundColor,
@@ -24,14 +26,20 @@ class RecentScreen extends StatelessWidget {
                 spY(10),
                 recentTitle(),
                 spY(10),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return recentItemsBody();
-                    },
-                  ),
-                ),
+                GetBuilder(
+                    init: recentController,
+                    builder: (_) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: recentController.recents.length,
+                          itemBuilder: (context, index) {
+                            return recentItemsBody(
+                                recentController.recents[index],
+                                recentController);
+                          },
+                        ),
+                      );
+                    })
               ],
             ),
           ),

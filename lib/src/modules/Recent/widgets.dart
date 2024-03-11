@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/recent_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
+import 'package:voipmax/src/data/models/recent_calls_model.dart';
 
 Widget recentTitle() {
   return Container(
@@ -18,9 +20,10 @@ Widget recentTitle() {
   );
 }
 
-Widget recentItemsBody() {
+Widget recentItemsBody(
+    RecentCallsModel recent, RecentCallsBloc recentController) {
   return Container(
-    margin: EdgeInsets.only(bottom: Get.height * .015,top: 5),
+    margin: EdgeInsets.only(bottom: Get.height * .015, top: 5),
     child: Column(
       children: [
         Row(
@@ -39,24 +42,39 @@ Widget recentItemsBody() {
             ),
             spX(10),
             //name & pNumber
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: Get.width * .5,
-                  child: Text(
-                    "Name Holder",
-                    style: textSmall,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                spY(5),
-                Text(
-                  "pNumber Holder",
-                  style: textSmall.copyWith(color: hintColor),
-                ),
-              ],
-            ),
+            GetBuilder(
+                init: recentController,
+                builder: (_) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: Get.width * .5,
+                        child: Text(
+                          recent.callee != null &&
+                                  recent.callee.toString().isNotEmpty
+                              ? recent.callee.toString()
+                              : recent.caller ?? "Unknown",
+                          style: textSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (recent.callee != null &&
+                          recent.callee.toString().isNotEmpty &&
+                          recent.caller != null &&
+                          recent.caller.toString().isEmpty)
+                        spY(5),
+                      if (recent.callee != null &&
+                          recent.callee.toString().isNotEmpty &&
+                          recent.caller != null &&
+                          recent.caller.toString().isEmpty)
+                        Text(
+                          recent.caller.toString(),
+                          style: textSmall.copyWith(color: hintColor),
+                        ),
+                    ],
+                  );
+                })
           ],
         ),
         //dividers
