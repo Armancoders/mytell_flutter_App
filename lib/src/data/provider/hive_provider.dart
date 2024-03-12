@@ -8,18 +8,27 @@ class HiveDBProvider extends Bloc {
   MyTelRepo repo = MyTelRepo();
 
   saveRecentCallLog({required List<RecentCallsModel>? callLog}) {
-    box.put("${repo.sipServer?.data?.extension}@recentCalls", callLog);
+    try {
+      box.put("${repo.sipServer?.data?.extension}@recentCalls", callLog);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<List<RecentCallsModel>> getRecentCalls() async {
     List<RecentCallsModel> recents = [];
-    box = await Hive.openBox("recents");
-    recents = box.get("${repo.sipServer?.data?.extension}@recentCalls") != null
-        ? box
-                .get("${repo.sipServer?.data?.extension}@recentCalls")
-                .cast<RecentCallsModel?>() ??
-            []
-        : [];
+    try {
+      box = await Hive.openBox("recents");
+      recents =
+          box.get("${repo.sipServer?.data?.extension}@recentCalls") != null
+              ? box
+                      .get("${repo.sipServer?.data?.extension}@recentCalls")
+                      .cast<RecentCallsModel>() ??
+                  []
+              : [];
+    } catch (e) {
+      recents = [];
+    }
     return recents;
   }
 }
