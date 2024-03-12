@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/data/remote/api_helper.dart';
@@ -19,6 +21,7 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
     super.onInit();
     initTabController();
     getExtensions();
+    getContacts();
   }
 
   initTabController() {
@@ -36,6 +39,15 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
     repo.extensions = await AipHelper.extensionsStatus(
       domain: repo.sipServer?.data?.wssDomain ?? "",
     );
+    update();
+  }
+
+  Future getContacts() async {
+    if (await Permission.contacts.status != PermissionStatus.granted) {
+      await Permission.contacts.request();
+    }
+    repo.contacts = await FlutterContacts.getContacts(
+        withProperties: true, withThumbnail: true);
     update();
   }
 }

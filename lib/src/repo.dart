@@ -1,3 +1,4 @@
+import 'package:flutter_contacts/contact.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
@@ -10,6 +11,7 @@ class MyTelRepo extends Bloc {
   String? fcmToken;
   Extensions? extensions;
   var remoteUserDetails = {};
+  List<Contact>? contacts = [];
   Future getIMEI() async {
     try {
       Permission.phone.request();

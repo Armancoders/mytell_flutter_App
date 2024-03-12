@@ -16,7 +16,7 @@ class Contact extends StatelessWidget {
     MyTelRepo repo = MyTelRepo();
     // _controller.onInit();
     return GetBuilder(
-        init: ContactBloc(),
+        init: _controller,
         builder: (_) {
           return Scaffold(
             appBar: AppBar(
@@ -48,27 +48,43 @@ class Contact extends StatelessWidget {
                       right: Get.width * .06,
                     ),
                     child: RefreshIndicator(
-                        child: ListView.builder(
-                          itemCount: repo.extensions?.data?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return contactItemBody(
-                                repo.extensions?.data?[index]);
-                          },
-                        ),
-                        onRefresh: () async {
-                          await _controller.getExtensions();
-                        })),
+                      color: primaryColor,
+                      onRefresh: () {
+                        return _controller.getContacts();
+                      },
+                      child: repo.contacts != null && repo.contacts!.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: repo.contacts?.length ?? 0,
+                              itemBuilder: (context, index) {
+                                return contactItemBody(repo.contacts?[index]);
+                              },
+                            )
+                          : const Center(
+                              child: Text("No Contact"),
+                            ),
+                    )),
                 Container(
                   color: backGroundColor,
                   padding: EdgeInsets.only(
                     left: Get.width * .06,
                     right: Get.width * .06,
                   ),
-                  child: ListView.builder(
-                    itemCount: repo.extensions?.data?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return contactItemBody(repo.extensions?.data?[index]);
+                  child: RefreshIndicator(
+                    color: primaryColor,
+                    onRefresh: () async {
+                      await _controller.getExtensions();
                     },
+                    child: repo.extensions != null
+                        ? ListView.builder(
+                            itemCount: repo.extensions?.data?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              return extensionsItemBody(
+                                  repo.extensions?.data?[index]);
+                            },
+                          )
+                        : const Center(
+                            child: Text("No Team mate"),
+                          ),
                   ),
                 ),
               ],
