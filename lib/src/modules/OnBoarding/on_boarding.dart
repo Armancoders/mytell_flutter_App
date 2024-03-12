@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voipmax/src/component/button.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
@@ -33,16 +34,19 @@ class OnBoarding extends StatelessWidget {
               spY(15),
               Hero(
                 tag: "btn",
-               child: Button(
-                  btnWidth: Get.width,
-                  btnBackGroundColor: primaryColor,
-                  btnChild: Text(
-                    "Start",
-                    style: textMedium.copyWith(color: backGroundColor),
-                  ),
-                  btnOnPressed: () {
-                    Get.toNamed(Routes.LOGIN);
-                  }),),
+                child: Button(
+                    btnWidth: Get.width,
+                    btnBackGroundColor: primaryColor,
+                    btnChild: Text(
+                      "Start",
+                      style: textMedium.copyWith(color: backGroundColor),
+                    ),
+                    btnOnPressed: () async {
+                      var prefs = await SharedPreferences.getInstance();
+                      prefs.setBool("onBoardingDone", true);
+                      Get.toNamed(Routes.LOGIN);
+                    }),
+              ),
               // spY(15),
               // Button(
               //     btnWidth: Get.width,

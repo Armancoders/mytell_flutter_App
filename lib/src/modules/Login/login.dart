@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginBloc loginController = Get.find();
+    loginController.autoLogin();
     return Scaffold(
         body: SafeArea(
       // top: true,

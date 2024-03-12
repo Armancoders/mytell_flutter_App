@@ -13,8 +13,8 @@ class LoginBloc extends Bloc {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxBool logging = false.obs;
+  late SharedPreferences prefs;
   Future<void> login({bool? isPush = false}) async {
-    var prefs = await SharedPreferences.getInstance();
     if (userNameController.text.trim().isEmpty) {
       Get.snackbar("", "",
           backgroundColor: Colors.redAccent,
@@ -75,5 +75,23 @@ class LoginBloc extends Bloc {
       }
       logging.value = false;
     });
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    // init();
+  }
+
+  void autoLogin() async {
+    prefs = await SharedPreferences.getInstance();
+    userNameController.text = prefs.getString("userName") ?? "";
+    passwordController.text = prefs.getString("passWord") ?? "";
+
+    if (userNameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      login();
+    }
   }
 }

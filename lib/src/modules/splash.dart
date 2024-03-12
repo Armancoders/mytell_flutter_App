@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voipmax/src/bloc/call_bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/bloc/splash_bloc.dart';
@@ -33,7 +34,12 @@ class SplashScreen extends StatelessWidget {
             return AnimatedOpacity(
               opacity: controller.animationStarted.value ? 1.0 : 0.0,
               duration: const Duration(seconds: 1),
-              onEnd: () {
+              onEnd: () async {
+                var prefs = await SharedPreferences.getInstance();
+                if (prefs.getBool("onBoardingDone") ?? false) {
+                  Get.toNamed(Routes.LOGIN);
+                  return;
+                }
                 Get.offAllNamed(Routes.ON_BOARDING);
               },
               child: Column(
