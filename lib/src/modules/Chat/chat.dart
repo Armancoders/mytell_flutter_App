@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/modules/Chat/widgets.dart';
@@ -14,7 +13,6 @@ class ChatScreen extends StatelessWidget {
         elevation: .2,
         automaticallyImplyLeading: false,
         flexibleSpace: chatAppBar(),
-
       ),
       body: Container(
         color: backGroundColor,
@@ -25,7 +23,6 @@ class ChatScreen extends StatelessWidget {
             chatBody(),
             //textfield
             chatTextField()
-            
           ],
         ),
       ),
