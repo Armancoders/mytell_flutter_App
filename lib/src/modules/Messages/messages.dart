@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/component/search_bar.dart';
+import 'package:voipmax/src/component/sip_register_statusbar.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/modules/Messages/widgets.dart';
 
@@ -11,9 +12,14 @@ class MessagesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation: .2,
         backgroundColor: backGroundColor,
-        flexibleSpace: const SafeArea(child: CustomSearchBar()),
+        actions: const [
+          SafeArea(child: SipRegisterStatusBar()),
+        ],
+
+        title: const CustomSearchBar(),
+        // flexibleSpace: const SafeArea(child: CustomSearchBar()),
       ),
       body: Container(
         color: backGroundColor,

@@ -18,7 +18,7 @@ class RecentScreen extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.only(
               left: Get.width * .06,
-              right: Get.width * .06,
+              // right: Get.width * .06,
             ),
             color: backGroundColor,
             child: Column(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/contact_bloc.dart';
 import 'package:voipmax/src/component/search_bar.dart';
+import 'package:voipmax/src/component/sip_register_statusbar.dart';
 import 'package:voipmax/src/modules/Contact/widgets.dart';
 import 'package:voipmax/src/repo.dart';
 
@@ -22,7 +23,14 @@ class Contact extends StatelessWidget {
             appBar: AppBar(
               elevation: .2,
               backgroundColor: backGroundColor,
-              flexibleSpace: const CustomSearchBar(),
+              actions: const [
+                SafeArea(child: SipRegisterStatusBar()),
+              ],
+              title: const CustomSearchBar(),
+              // flexibleSpace: Padding(
+              //   padding: const EdgeInsets.only(bottom: 15.0),
+              //   child: const CustomSearchBar(),
+              // ),
               bottom: TabBar(
                 labelColor: primaryColor,
                 indicatorColor: primaryColor,
