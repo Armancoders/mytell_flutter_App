@@ -14,10 +14,12 @@ class HiveDBProvider extends Bloc {
   Future<List<RecentCallsModel>> getRecentCalls() async {
     List<RecentCallsModel> recents = [];
     box = await Hive.openBox("recents");
-    recents = box
-            .get("${repo.sipServer?.data?.extension}@recentCalls")
-            .cast<RecentCallsModel>() ??
-        [];
+    recents = box.get("${repo.sipServer?.data?.extension}@recentCalls") != null
+        ? box
+                .get("${repo.sipServer?.data?.extension}@recentCalls")
+                .cast<RecentCallsModel?>() ??
+            []
+        : [];
     return recents;
   }
 }
