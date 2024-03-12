@@ -147,8 +147,7 @@ class CallActionButtons extends StatelessWidget {
                                     dialButtonColor: dialColor,
                                     makeCall: (number) {
                                       print(number);
-                                      callController.callStateController!
-                                          .refer(number);
+                                      callController.sendDTMF(dtmf: number);
                                       Get.back();
                                       // dialPadController.makeCall(true, number);
                                     },
@@ -200,8 +199,15 @@ class CallActionButtons extends StatelessWidget {
                       Colors.white
                           .withOpacity(callController.hold.value ? .7 : .2)),
                 ),
-                buttonBG(const Icon(Icons.add_call, color: backGroundColor),
-                    Colors.white.withOpacity(.2))
+                GestureDetector(
+                  onTap: () {
+                    // callController.transferCall(target: "target");
+                  },
+                  child: buttonBG(
+                      const Icon(Icons.phone_forwarded_outlined,
+                          color: backGroundColor),
+                      Colors.white.withOpacity(.2)),
+                )
               ],
             )
           ],

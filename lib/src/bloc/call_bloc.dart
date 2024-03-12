@@ -254,6 +254,14 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     update();
   }
 
+  void transferCall({required String target}) {
+    callStateController!.refer(target);
+  }
+
+  void sendDTMF({required String dtmf}) {
+    callStateController!.sendDTMF(dtmf);
+  }
+
   @override
   void onInit() {
     super.onInit();
