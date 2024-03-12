@@ -8,6 +8,8 @@ import 'package:voipmax/src/modules/Messages/widgets.dart';
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({super.key});
 
+  tempSearchFun({required String? q}) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +20,9 @@ class MessagesScreen extends StatelessWidget {
           SafeArea(child: SipRegisterStatusBar()),
         ],
 
-        title: const CustomSearchBar(),
+        title: CustomSearchBar(
+          onSearch: tempSearchFun,
+        ),
         // flexibleSpace: const SafeArea(child: CustomSearchBar()),
       ),
       body: Container(

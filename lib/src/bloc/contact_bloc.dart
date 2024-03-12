@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
+import 'package:voipmax/src/data/models/extensions.dart';
 import 'package:voipmax/src/data/remote/api_helper.dart';
 import 'package:voipmax/src/repo.dart';
 
@@ -11,6 +12,8 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
   late TabController tabController;
   MyTelRepo repo = MyTelRepo();
   final SIPBloc sipController = Get.find();
+  List<Contact>? tempContacts = [];
+  Extensions? tempExtensions;
 
   Future makeCall([bool voiceOnly = false, String? dest]) async {
     sipController.makeCall(voiceOnly, dest);
@@ -55,5 +58,48 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
     repo.contacts = await FlutterContacts.getContacts(
         withProperties: true, withThumbnail: true);
     update();
+  }
+
+  search({required String? q}) {
+    if (q == null) {
+      if (tempContacts?.isNotEmpty ?? false) {
+        repo.contacts = tempContacts;
+        tempContacts = [];
+      }
+      if (tempExtensions?.data?.isNotEmpty ?? false) {
+        repo.extensions = tempExtensions;
+        tempExtensions = Extensions(data: []);
+      }
+      update();
+      return;
+    }
+    if (tabController.index == 0) {
+      //contacts
+
+      if (tempContacts!.isEmpty) {
+        tempContacts = repo.contacts;
+      }
+      repo.contacts = [];
+      for (var contact in tempContacts!) {
+        if (contact.displayName.toLowerCase().contains(q.toLowerCase()) ||
+            contact.phones[0].number.contains(q)) {
+          repo.contacts!.add(contact);
+        }
+      }
+      update();
+    } else if (tabController.index == 1) {
+      //team
+
+      if (tempExtensions?.data?.isEmpty ?? true) {
+        tempExtensions = repo.extensions;
+      }
+      repo.extensions = Extensions(data: []);
+      for (var extension in tempExtensions!.data!) {
+        if (extension.extension!.toLowerCase().contains(q.toLowerCase())) {
+          repo.extensions!.data!.add(extension);
+        }
+      }
+      update();
+    }
   }
 }

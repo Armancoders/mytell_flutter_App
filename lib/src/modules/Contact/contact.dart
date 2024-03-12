@@ -26,7 +26,9 @@ class Contact extends StatelessWidget {
               actions: const [
                 SafeArea(child: SipRegisterStatusBar()),
               ],
-              title: const CustomSearchBar(),
+              title: CustomSearchBar(
+                onSearch: _controller.search,
+              ),
               // flexibleSpace: Padding(
               //   padding: const EdgeInsets.only(bottom: 15.0),
               //   child: const CustomSearchBar(),
