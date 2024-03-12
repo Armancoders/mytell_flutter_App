@@ -30,14 +30,18 @@ class RecentScreen extends StatelessWidget {
                     init: recentController,
                     builder: (_) {
                       return Expanded(
-                        child: ListView.builder(
-                          itemCount: recentController.recents.length,
-                          itemBuilder: (context, index) {
-                            return recentItemsBody(
-                                recentController.recents[index],
-                                recentController);
-                          },
-                        ),
+                        child: recentController.recents.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: recentController.recents.length,
+                                itemBuilder: (context, index) {
+                                  return recentItemsBody(
+                                      recentController.recents[index],
+                                      recentController);
+                                },
+                              )
+                            : const Center(
+                                child: Text("No recent call"),
+                              ),
                       );
                     })
               ],
