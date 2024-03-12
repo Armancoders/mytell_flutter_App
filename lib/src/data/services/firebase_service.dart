@@ -3,26 +3,38 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sip_ua/sip_ua.dart';
 import 'package:voipmax/firebase_options.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/bloc/call_bloc.dart';
+import 'package:voipmax/src/bloc/login_bloc.dart';
+import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/repo.dart';
 
 class MyTelFirebaseServices extends Bloc {
+  LoginBloc loginController = Get.put(LoginBloc(), permanent: true);
   MyTelRepo repo = MyTelRepo();
   late AndroidNotificationChannel channel;
   bool isFlutterLocalNotificationsInitialized = false;
   var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   RxInt remainingDays = 0.obs;
   CallBloc callController = Get.find();
+  SIPBloc sipController = Get.put(SIPBloc(), permanent: true);
 
   // Future<void> _handleMessage(RemoteMessage message) async {
   //   await Firebase.initializeApp(
   //       options: DefaultFirebaseOptions.currentPlatform);
   // }
 
-  void showFlutterNotification(RemoteMessage message) async {
+  Future<void> showFlutterNotification(RemoteMessage message) async {
     if (message.data.containsKey("callee")) {
+      if (callController.callStateController != null) {
+        if (callController.callStateController?.state !=
+            CallStateEnum.CALL_INITIATION) return;
+      }
+
+      await loginController.login(isPush: true);
+      sipController.register();
       callController.showIncomeCall(
           caller: message.data["caller"], callee: message.data["callee"]);
     }
@@ -82,7 +94,7 @@ class MyTelFirebaseServices extends Bloc {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
-    // FirebaseMessaging.onBackgroundMessage(_handleMessage);
+    // FirebaseMessaging.onBackgroundMessage(showFlutterNotification);
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
     if (defaultTargetPlatform == TargetPlatform.android) {
       pushNotifToken = await FirebaseMessaging.instance.getToken();
