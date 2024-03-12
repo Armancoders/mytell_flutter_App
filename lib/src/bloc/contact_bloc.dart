@@ -39,6 +39,12 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
     repo.extensions = await AipHelper.extensionsStatus(
       domain: repo.sipServer?.data?.wssDomain ?? "",
     );
+    repo.extensions?.data?.sort((a, b) => int.parse(
+            a.extension?.replaceRange(a.extension!.indexOf("@"), null, "") ??
+                "0")
+        .compareTo(int.parse(
+            b.extension?.replaceRange(b.extension!.indexOf("@"), null, "") ??
+                "0")));
     update();
   }
 
