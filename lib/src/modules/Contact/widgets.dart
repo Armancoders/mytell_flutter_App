@@ -88,7 +88,7 @@ Widget contactItemBody(Contact? contact) {
   );
 }
 
-Widget extensionsItemBody(ExtensionsData? ex) {
+Widget extensionsItemBody(ExtensionsData? ex, [bool onlyVoiceCall = false]) {
   ContactBloc _controller = Get.put(ContactBloc());
   return Container(
     margin: EdgeInsets.only(bottom: Get.height * .015, top: 5),
@@ -146,10 +146,11 @@ Widget extensionsItemBody(ExtensionsData? ex) {
                   ),
                 ),
                 spX(10),
-                const Icon(
-                  Icons.chat_bubble_rounded,
-                  color: Colors.blue,
-                )
+                if (!onlyVoiceCall)
+                  const Icon(
+                    Icons.video_call,
+                    color: Colors.blue,
+                  )
               ],
             )
           ],

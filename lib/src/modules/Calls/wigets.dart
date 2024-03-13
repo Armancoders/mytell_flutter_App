@@ -8,9 +8,11 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:voipmax/src/bloc/call_bloc.dart';
+import 'package:voipmax/src/bloc/contact_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
+import 'package:voipmax/src/modules/Contact/widgets.dart';
 import 'package:voipmax/src/repo.dart';
 
 class BluredBackGrpund extends StatelessWidget {
@@ -101,6 +103,8 @@ class CallActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CallBloc callController = Get.find();
+    ContactBloc _controller = Get.find();
+    MyTelRepo repo = MyTelRepo();
     return Obx(() => Column(
           children: [
             Row(
@@ -129,33 +133,8 @@ class CallActionButtons extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         builder: (_) {
-                          return SafeArea(
-                            child: Container(
-                              height: Get.height * .8,
-                              width: Get.width,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(Get.width * .5)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  DialPad(
-                                    hideSubtitle: true,
-                                    enableDtmf: true,
-                                    buttonColor: hintBackGroundColor,
-                                    backspaceButtonIconColor: hintColor,
-                                    dialButtonColor: dialColor,
-                                    makeCall: (number) {
-                                      print(number);
-                                      callController.sendDTMF(dtmf: number);
-                                      Get.back();
-                                      // dialPadController.makeCall(true, number);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                          return inCallDialPadWidget(callController,
+                              makeCall: callController.sendDTMF);
                         });
                   },
                   child: buttonBG(
@@ -201,6 +180,90 @@ class CallActionButtons extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+                    showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(Get.width * .12)),
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (_) {
+                          return SafeArea(
+                            child: Container(
+                                height: Get.height * .8,
+                                width: Get.width,
+                                decoration: BoxDecoration(
+                                    color: backGroundColor,
+                                    borderRadius:
+                                        BorderRadius.circular(Get.width * .1)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(Get.width * .06),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Refer call to :",
+                                            style: textTitleLarge,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              Get.width * .12)),
+                                                  context: context,
+                                                  isScrollControlled: true,
+                                                  builder: (_) {
+                                                    return inCallDialPadWidget(
+                                                        callController,
+                                                        makeCall: callController
+                                                            .transferCall);
+                                                  });
+                                            },
+                                            child: const Icon(
+                                              Icons.dialpad,
+                                              color: dialColor,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: backGroundColor,
+                                          borderRadius: BorderRadius.circular(
+                                              Get.width * .1)),
+                                      padding: EdgeInsets.all(Get.width * .06),
+                                      child: RefreshIndicator(
+                                        color: primaryColor,
+                                        onRefresh: () async {
+                                          await _controller.getExtensions();
+                                        },
+                                        child: repo.extensions != null
+                                            ? ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: repo.extensions?.data
+                                                        ?.length ??
+                                                    0,
+                                                itemBuilder: (context, index) {
+                                                  return extensionsItemBody(
+                                                      repo.extensions
+                                                          ?.data?[index],
+                                                      true);
+                                                },
+                                              )
+                                            : const Center(
+                                                child: Text("No Team mate"),
+                                              ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          );
+                        });
                     // callController.transferCall(target: "target");
                   },
                   child: buttonBG(
@@ -212,6 +275,39 @@ class CallActionButtons extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  Widget inCallDialPadWidget(CallBloc callController,
+      {void Function(String value)? makeCall}) {
+    return SafeArea(
+      child: Container(
+        height: Get.height * .8,
+        width: Get.width,
+        decoration:
+            BoxDecoration(borderRadius: BorderRadius.circular(Get.width * .5)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DialPad(
+              hideSubtitle: true,
+              enableDtmf: true,
+              buttonColor: hintBackGroundColor,
+              backspaceButtonIconColor: hintColor,
+              dialButtonColor: dialColor,
+              makeCall: (value) {
+                return makeCall!(value);
+              },
+              // makeCall: (number) {
+              // print(number);
+              // callController.sendDTMF(dtmf: number);
+              // Get.back();
+              //   // dialPadController.makeCall(true, number);
+              // },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -13,7 +13,7 @@ class Contact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ContactBloc _controller = Get.put(ContactBloc());
+    ContactBloc _controller = Get.find();
     MyTelRepo repo = MyTelRepo();
     // _controller.onInit();
     return GetBuilder(
