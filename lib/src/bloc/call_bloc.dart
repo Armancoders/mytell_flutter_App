@@ -99,9 +99,13 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
 
   void _resetActionButtons() {
     audioMuted.value = false;
+    callStateController!.unmute(true, false);
     videoMuted.value = false;
+    callStateController!.unmute(false, true);
     speakerOn.value = false;
+    _localStream!.getAudioTracks()[0].enableSpeakerphone(speakerOn.value);
     hold.value = false;
+    callStateController!.unhold();
     connectedBluetoothDevice.value = "Not connected";
   }
 
