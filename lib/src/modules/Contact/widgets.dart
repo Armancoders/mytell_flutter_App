@@ -44,7 +44,9 @@ Widget contactItemBody(Contact? contact) {
                   ),
                   spY(5),
                   Text(
-                    contact?.phones[0].number ?? "offline",
+                    contact?.phones.isNotEmpty ?? false
+                        ? contact?.phones[0].number ?? "Unknown"
+                        : "Unknown",
                     style: textSmall.copyWith(color: hintColor),
                   ),
                 ],
