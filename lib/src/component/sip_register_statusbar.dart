@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
+import 'package:voipmax/src/core/utils/utils.dart';
 import 'package:voipmax/src/core/values/values.dart';
 
 class SipRegisterStatusBar extends StatelessWidget {
@@ -16,22 +17,29 @@ class SipRegisterStatusBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              sipController.registrationStatus.value ==
-                      MytelValues.deviceRegisteredStatus
-                  ? Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                          color: Colors.greenAccent,
-                          borderRadius: BorderRadius.circular(3)),
-                    )
-                  : Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(3)),
-                    ),
+              sipController.registering.value
+                  ? spinKitButtonPrimary
+                  : sipController.registrationStatus.value ==
+                          MytelValues.deviceRegisteredStatus
+                      ? Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                              color: Colors.greenAccent,
+                              borderRadius: BorderRadius.circular(3)),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            sipController.register();
+                          },
+                          child: Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(3)),
+                          ),
+                        ),
               Text(sipController.registrationStatus.value)
             ],
           ),

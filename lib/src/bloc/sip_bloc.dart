@@ -16,9 +16,11 @@ class SIPBloc extends Bloc {
   MyTelRepo repo = MyTelRepo();
   RxString registrationStatus = MytelValues.deviceNotRegisteredStatus.obs;
   MyTellForeGroundService foreGroundService = Get.find();
+  RxBool registering = false.obs;
 
   register() {
     if (repo.sipServer == null) return;
+    registering.value = true;
     final Map<String, String> wsExtraHeaders = {
       "${repo.sipServer?.data?.stun?.replaceRange(repo.sipServer?.data?.stun?.indexOf(":") ?? 0, null, "")}":
           "${repo.sipServer?.data?.stun?.replaceRange(0, repo.sipServer?.data?.stun?.indexOf(":"), "")}"
@@ -34,6 +36,7 @@ class SIPBloc extends Bloc {
               "${repo.sipServer?.data?.extension ?? ""}@${repo.sipServer?.data?.wssDomain}",
           displayName: repo.sipServer?.data?.extension ?? "");
     } catch (e) {
+      registering.value = false;
       registrationStatus.value = MytelValues.deviceNotRegisteredStatus;
     }
   }
@@ -104,6 +107,7 @@ class SIPBloc extends Bloc {
   }
 
   Future<void> onRegisterStateChanged(RegistrationState state) async {
+    registering.value = false;
     registrationStatus.value = state.state == RegistrationStateEnum.REGISTERED
         ? MytelValues.deviceRegisteredStatus
         : MytelValues.deviceNotRegisteredStatus;
