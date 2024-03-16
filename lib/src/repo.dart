@@ -4,6 +4,7 @@ import 'package:unique_identifier/unique_identifier.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/data/models/extensions.dart';
 import 'package:voipmax/src/data/models/sip_server_model.dart';
+import 'package:voipmax/src/data/models/voicemail_model.dart';
 
 class MyTelRepo extends Bloc {
   SIPServerModel? sipServer;
@@ -12,6 +13,7 @@ class MyTelRepo extends Bloc {
   Extensions? extensions;
   var remoteUserDetails = {};
   List<Contact>? contacts = [];
+  VoiceMailModel? voiceMails;
   Future getIMEI() async {
     try {
       Permission.phone.request();

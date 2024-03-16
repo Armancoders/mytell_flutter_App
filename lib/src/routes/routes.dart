@@ -1,5 +1,4 @@
-
-class Routes{
+class Routes {
   static const ON_BOARDING = "/on_boarding";
   static const LOGIN = "/login";
   static const HOME = "/home";
@@ -11,5 +10,5 @@ class Routes{
   static const CHAT = "/chat";
   static const INCOMING_CALL = "/incoming_call";
   static const OUTGOING_CALL = "/outgoing_call";
-
+  static const VOICE_MAIL = "/voice_mail";
 }
