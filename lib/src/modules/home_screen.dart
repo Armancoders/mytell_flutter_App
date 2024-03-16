@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:voipmax/src/modules/Messages/messages.dart';
 import 'package:voipmax/src/modules/Contact/contact.dart';
 import 'package:voipmax/src/modules/Recent/recent.dart';
+import 'package:voipmax/src/modules/Voice%20Mail/voice_mail_screen.dart';
 import 'package:voipmax/src/modules/dialpad.dart';
 import '../core/theme/color_theme.dart';
 
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     DialPadScreen(),
     Contact(),
     MessagesScreen(),
-    Contact(),
+    VoiceMailScreen(),
   ];
 
   @override
@@ -31,31 +32,25 @@ class HomeScreen extends StatelessWidget {
           onTap: (itemIndex) {},
           items: const [
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.watch_later),
-              icon: Icon(Icons.watch_later),
-              label: "Recent"
-            ),
+                activeIcon: Icon(Icons.watch_later),
+                icon: Icon(Icons.watch_later),
+                label: "Recent"),
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.dialpad),
-              icon: Icon(Icons.dialpad),
-              label: "Keypad"
-            ),
+                activeIcon: Icon(Icons.dialpad),
+                icon: Icon(Icons.dialpad),
+                label: "Keypad"),
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.perm_contact_cal),
-              icon: Icon(Icons.perm_contact_cal),
-              label: "Contact"
-            ),
+                activeIcon: Icon(Icons.perm_contact_cal),
+                icon: Icon(Icons.perm_contact_cal),
+                label: "Contact"),
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.chat_bubble),
-              icon: Icon(Icons.chat_bubble),
-              label: "Chat"
-            ),
+                activeIcon: Icon(Icons.chat_bubble),
+                icon: Icon(Icons.chat_bubble),
+                label: "Chat"),
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.voicemail),
-              icon: Icon(Icons.voicemail),
-              label: "Voicemail"
-            ),
-            
+                activeIcon: Icon(Icons.voicemail),
+                icon: Icon(Icons.voicemail),
+                label: "Voicemail"),
           ],
         ),
         tabBuilder: (BuildContext context, int index) {
