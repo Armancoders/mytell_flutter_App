@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/voicemail_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
@@ -31,23 +32,39 @@ class VoiceMailBody extends StatelessWidget {
                         Row(
                           children: [
                             //avatar
-                            Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: hintColor.withOpacity(.3)),
-                              padding: const EdgeInsets.all(10),
-                              child: Center(
-                                child: Icon(
-                                  Icons.play_arrow,
-                                  color: repo.voiceMails?.data?[index]
-                                                  .messageStatus !=
-                                              null &&
-                                          repo.voiceMails?.data?[index]
-                                                  .messageStatus ==
-                                              "saved"
-                                      ? muteColor
-                                      : Colors.blueAccent,
-                                ),
+                            GestureDetector(
+                              onTap: () async {
+                                voiceMailController.voiceMail =
+                                    repo.voiceMails!.data![index];
+                                await voiceMailController.handlePlayVoiceMail();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: hintColor.withOpacity(.3)),
+                                padding: const EdgeInsets.all(10),
+                                child: Center(
+                                    child: Obx(
+                                  () => repo.voiceMails?.data?[index]
+                                              .downloading?.value ??
+                                          false
+                                      ? CircularProgressIndicator()
+                                      : Icon(
+                                          repo.voiceMails?.data?[index].playing!
+                                                      .value ??
+                                                  false
+                                              ? Icons.pause
+                                              : Icons.play_arrow,
+                                          color: repo.voiceMails?.data?[index]
+                                                          .messageStatus !=
+                                                      null &&
+                                                  repo.voiceMails?.data?[index]
+                                                          .messageStatus ==
+                                                      "saved"
+                                              ? muteColor
+                                              : Colors.blueAccent,
+                                        ),
+                                )),
                               ),
                             ),
                             spX(10),
@@ -113,18 +130,27 @@ class VoiceMailBody extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
-                                        width: Get.width * .5,
-                                        // width: Get.width,
-                                        child: Text(
-                                          repo.voiceMails?.data?[index]
-                                                  .timeLengthLabel ??
-                                              "00:00",
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: textSmall.copyWith(
-                                              color: hintColor),
-                                        ),
-                                      ),
+                                          width: Get.width * .5,
+                                          // width: Get.width,
+                                          child: Obx(
+                                            () => Text(
+                                              voiceMailController
+                                                      .remainedPlayerTime
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? voiceMailController
+                                                      .remainedPlayerTime.value
+                                                  : repo
+                                                          .voiceMails
+                                                          ?.data?[index]
+                                                          .timeLengthLabel ??
+                                                      "00:00",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: textSmall.copyWith(
+                                                  color: hintColor),
+                                            ),
+                                          )),
                                       Icon(
                                         repo.voiceMails?.data?[index]
                                                         .messageStatus !=

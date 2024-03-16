@@ -2,26 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSContactsUsageDescription</key>
-    <string>We need access to the contact list for making calls to them</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-    <string>dev.flutter.background.refresh</string>
+		<string>dev.flutter.background.refresh</string>
 	</array>
- 	<key>NSBluetoothAlwaysUsageDescription</key>
-    <string>WE need to access your bluetooth for connect audio devices</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-    <string>WE need to access your bluetooth for connect audio devices</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to capture audio for voice call</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Used to capture video for video call</string>
-	<key>UIBackgroundModes</key>
-	<array>
-    <string>voip</string>
-    <string>remote-notification</string>
-    <string>processing</string>
-	</array>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -44,6 +30,25 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>WE need to access your bluetooth for connect audio devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>WE need to access your bluetooth for connect audio devices</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to capture video for video call</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to the contact list for making calls to them</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio for voice call</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+		<string>voip</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -63,9 +68,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>

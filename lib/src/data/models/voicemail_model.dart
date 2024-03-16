@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class VoiceMailModel {
   List<VoiceMailData>? data;
 
@@ -22,6 +24,8 @@ class VoiceMailData {
   String? voicemailMessageUuid;
   String? timeLengthLabel;
   DateTime? createdDate;
+  RxBool? downloading;
+  RxBool? playing;
 
   VoiceMailData(
       {this.callerIdName,
@@ -31,7 +35,9 @@ class VoiceMailData {
       this.messageStatus,
       this.voicemailMessageUuid,
       this.timeLengthLabel,
-      this.createdDate});
+      this.createdDate,
+      this.downloading,
+      this.playing});
 
   VoiceMailData.fromJson(Map<String, dynamic> json) {
     callerIdName = json['caller_id_name'];
@@ -42,5 +48,7 @@ class VoiceMailData {
     voicemailMessageUuid = json['voicemail_message_uuid'];
     timeLengthLabel = "00:00";
     createdDate = DateTime(DateTime.now().year);
+    downloading = false.obs;
+    playing = false.obs;
   }
 }

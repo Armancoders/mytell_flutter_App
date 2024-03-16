@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:voipmax/src/core/values/values.dart';
@@ -127,6 +130,36 @@ class AipHelper extends Bloc {
     } catch (e) {
       print(e);
       voiceMails = null;
+    }
+    return voiceMails;
+  }
+
+  static Future<VoiceMailModel?> doanloadVoiceMail(
+      {required String domain, required String mUUID}) async {
+    var endPoint = "/get_voicemail_message/?domain=$domain&message_uuid=$mUUID";
+    VoiceMailModel? voiceMails;
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+      "X-Api-Token": MytelValues.apiKey
+    };
+
+    try {
+      Directory appDocDirectory = await getApplicationDocumentsDirectory();
+      var path = await Directory("${appDocDirectory.path}/Voice Mails")
+          .create(recursive: true);
+      print(path.absolute);
+
+      final taskId = await FlutterDownloader.enqueue(
+          url: "${AipHelper()._baseUrl}$endPoint",
+          headers: headers,
+          savedDir: path.absolute.path,
+          showNotification: false,
+          openFileFromNotification: false,
+          saveInPublicStorage: true);
+      print(taskId);
+    } catch (e) {
+      print(e);
     }
     return voiceMails;
   }
