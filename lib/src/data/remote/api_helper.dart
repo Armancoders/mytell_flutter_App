@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:voipmax/src/core/values/values.dart';
 import 'package:voipmax/src/data/models/extensions.dart';
 import 'package:voipmax/src/data/models/sip_server_model.dart';
+import 'package:voipmax/src/data/models/voicemail_model.dart';
 import 'package:voipmax/src/repo.dart';
 
 class AipHelper extends Bloc {
@@ -101,5 +102,32 @@ class AipHelper extends Bloc {
       extentions = null;
     }
     return extentions;
+  }
+
+  static Future<VoiceMailModel?> getVoiceMails({
+    required String domain,
+  }) async {
+    var endPoint = "/list_voicemails/?username=$domain";
+    VoiceMailModel? voiceMails;
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+      "X-Api-Token": MytelValues.apiKey
+    };
+
+    try {
+      var response = await http
+          .get(Uri.parse("${AipHelper()._baseUrl}$endPoint"), headers: headers);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        voiceMails = VoiceMailModel.fromJson(data);
+      } else {
+        voiceMails = null;
+      }
+    } catch (e) {
+      print(e);
+      voiceMails = null;
+    }
+    return voiceMails;
   }
 }
