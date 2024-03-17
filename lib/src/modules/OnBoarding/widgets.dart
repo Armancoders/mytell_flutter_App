@@ -5,15 +5,20 @@ import 'package:voipmax/src/core/theme/text_theme.dart';
 
 Widget voipMaxBanner() {
   return SizedBox(
-    height: Get.height *.35,
+    height: Get.height * .35,
     child: Hero(
-      tag: "onB_voipMax",
-       child: Image.asset("assets/onB_voipMax.png",filterQuality: FilterQuality.high,fit: BoxFit.contain,)),
+        tag: "onB_voipMax",
+        child: Image.asset(
+          "assets/mytell_onboard.png",
+          filterQuality: FilterQuality.high,
+          fit: BoxFit.contain,
+        )),
   );
 }
 
 Widget voipMaxTitle() {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Row(
         textDirection: TextDirection.ltr,
@@ -30,10 +35,10 @@ Widget voipMaxTitle() {
           spX(5),
           Text.rich(
             TextSpan(
-              text: "VoIP",
+              text: "My",
               style: textLarge.copyWith(fontWeight: FontWeight.bold),
               children: [
-                TextSpan(text: "Max", style: textLarge),
+                TextSpan(text: "Tell", style: textLarge),
               ],
             ),
           )
@@ -41,7 +46,7 @@ Widget voipMaxTitle() {
       ),
       spY(15),
       Text(
-        "Everything you need is in one place",
+        "Secure, Fast, User friendly",
         style: textXLarge.copyWith(fontWeight: FontWeight.w600),
         maxLines: 2,
       )
@@ -51,7 +56,7 @@ Widget voipMaxTitle() {
 
 Widget voipMaxPrivacyPolicy() {
   return Text(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nec feugiat ligula, ornare pretium metus.",
+    "Discover our easy to install soft phone  compatible with any PBX system, enjoy a secure, fast, and high quality VoIP experience with minimal setup",
     style: textMedium,
   );
 }

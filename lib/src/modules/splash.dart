@@ -23,7 +23,8 @@ class SplashScreen extends StatelessWidget {
     Get.put(CallBloc(), permanent: true);
     Get.put(MyTellForeGroundService(), permanent: true);
     Get.put(SIPBloc(), permanent: true);
-    Get.lazyPut(() => ContactBloc());
+    Get.put(ContactBloc(), permanent: true);
+    // Get.lazyPut(() => ContactBloc());
 
     SplashScreenBloc controller = Get.put(SplashScreenBloc(), permanent: true);
     Get.put(MyTelFirebaseServices(), permanent: true);
@@ -39,7 +40,7 @@ class SplashScreen extends StatelessWidget {
               onEnd: () async {
                 var prefs = await SharedPreferences.getInstance();
                 if (prefs.getBool("onBoardingDone") ?? false) {
-                  Get.toNamed(Routes.LOGIN);
+                  Get.offAllNamed(Routes.LOGIN);
                   return;
                 }
                 Get.offAllNamed(Routes.ON_BOARDING);
@@ -47,16 +48,21 @@ class SplashScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset("assets/splashL.png"),
+                  SizedBox(
+                      width: Get.width * .3,
+                      height: Get.width * .4,
+                      child: Image.asset(
+                        "assets/mytell_espLogo.png",
+                      )),
                   spY(15),
                   Text.rich(
                     TextSpan(
-                      text: "VoIP",
+                      text: "My",
                       style: textXLarge.copyWith(
                           fontWeight: FontWeight.bold, color: backGroundColor),
                       children: [
                         TextSpan(
-                            text: "Max",
+                            text: "Tell",
                             style: textXLarge.copyWith(color: backGroundColor)),
                       ],
                     ),

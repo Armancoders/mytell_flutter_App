@@ -37,7 +37,7 @@ Widget voipMaxLogo() {
     child: Hero(
       tag: "onB_voipMax",
       child: Image.asset(
-        "assets/onB_voipMax.png",
+        "assets/mytell_onboard.png",
         fit: BoxFit.contain,
       ),
     ),
