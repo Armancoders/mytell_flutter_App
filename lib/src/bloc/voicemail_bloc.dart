@@ -53,40 +53,48 @@ class VoiceMailBloc extends Bloc {
   }
 
   Future<void> handlePlayVoiceMail() async {
-    var tasks = await FlutterDownloader.loadTasks();
-    if (voiceMail.playing!.value) {
-      await player.pause();
-      return;
-    }
-    if (playerDuration != null) {
-      if (playerDuration!.inSeconds > 0) {
-        await player.resume();
+    try {
+      var tasks = await FlutterDownloader.loadTasks();
+      if (voiceMail.playing!.value) {
+        await player.pause();
         return;
       }
-    }
-
-    voiceMail.downloading!.value = false;
-    voiceMail.playing!.value = false;
-    if (tasks != null) {
-      var task = tasks.firstWhereOrNull(
-          (task) => task.url.contains(voiceMail.voicemailMessageUuid ?? ""));
-
-      if (task != null) {
-        voiceMail.playing!.value = true;
-        await player
-            .play(DeviceFileSource("${task.savedDir}/${task.filename}"));
-        return;
+      if (playerDuration != null) {
+        if (playerDuration!.inSeconds > 0) {
+          await player.resume();
+          return;
+        }
       }
+
+      voiceMail.downloading!.value = false;
+      voiceMail.playing!.value = false;
+      if (tasks != null) {
+        var task = tasks.firstWhereOrNull(
+            (task) => task.url.contains(voiceMail.voicemailMessageUuid ?? ""));
+        // await FlutterDownloader.remove(taskId: task!.taskId);
+        // return;
+
+        if (task != null) {
+          voiceMail.playing!.value = true;
+          await player
+              .play(DeviceFileSource("${task.savedDir}/${task.filename}"));
+          return;
+        }
+      }
+
+      voiceMail.downloading!.value = true;
+
+      await AipHelper.doanloadVoiceMail(
+              domain: repo.sipServer?.data?.wssDomain ?? "",
+              mUUID: voiceMail.voicemailMessageUuid ?? "")
+          .then((value) {
+        handlePlayVoiceMail();
+      });
+    } catch (e) {
+      print(e);
+      voiceMail.downloading!.value = false;
+      voiceMail.playing!.value = false;
     }
-
-    voiceMail.downloading!.value = true;
-
-    await AipHelper.doanloadVoiceMail(
-            domain: repo.sipServer?.data?.wssDomain ?? "",
-            mUUID: voiceMail.voicemailMessageUuid ?? "")
-        .then((value) {
-      handlePlayVoiceMail();
-    });
   }
 
   void runPlayerListeners() {

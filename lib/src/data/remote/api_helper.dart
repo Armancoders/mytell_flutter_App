@@ -156,7 +156,7 @@ class AipHelper extends Bloc {
           savedDir: path.absolute.path,
           showNotification: false,
           openFileFromNotification: false,
-          saveInPublicStorage: true);
+          saveInPublicStorage: Platform.isIOS ? true : false);
       print(taskId);
     } catch (e) {
       print(e);
