@@ -88,7 +88,11 @@ class SIPProvider extends Bloc implements SipUaHelperListener {
     _settings.displayName = displayName ?? "";
     _settings.userAgent = userAgent ?? 'Dart SIP Client v1.0.0';
     _settings.dtmfMode = dtmfMode ?? DtmfMode.RFC2833;
-
+    print(webSocketUrl);
+    print(extraHeaders);
+    print(authorizationUser);
+    print(password);
+    print(displayName);
     try {
       baseSipUaHelper.start(_settings);
     } catch (e) {

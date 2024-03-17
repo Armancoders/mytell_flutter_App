@@ -35,11 +35,13 @@ class AipHelper extends Bloc {
     };
 
     try {
-      var response = await http.post(
+      var response =           await http.post(
           Uri.parse("${AipHelper()._baseUrl}$endPoint"),
           body: json.encode(body),
           headers: headers);
       var data = jsonDecode(utf8.decode(response.bodyBytes));
+      print("MANSOUR SALAM 2");
+      print(data);
       if (response.statusCode == 200) {
         sipServer = SIPServerModel.fromJson(data);
       } else {

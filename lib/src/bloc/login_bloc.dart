@@ -53,6 +53,12 @@ class LoginBloc extends Bloc {
       if (value != null) {
         repo.sipServer = value;
         logging.value = false;
+        print("SALAM-MANSOUR");
+        print(value.data!.wssDomain);
+        print(value.data!.extension);
+        print(value.data!.password);
+        print(value.data!.wssPort);
+
         SIPBloc sipBloc = Get.find();
         sipBloc.register();
 
