@@ -25,7 +25,7 @@ class DialPadScreen extends StatelessWidget {
           top: false,
           child: Container(
             padding: EdgeInsets.only(
-              top: Get.height * .11,
+              // top: Get.height * .11,
               left: Get.width * .06,
               right: Get.width * .06,
             ),
