@@ -1,4 +1,4 @@
-package com.example.mytell
+package com.armancoders.mytell
 
 import io.flutter.embedding.android.FlutterActivity
 
