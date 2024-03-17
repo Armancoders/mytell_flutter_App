@@ -149,9 +149,15 @@ Widget extensionsItemBody(ExtensionsData? ex, [bool onlyVoiceCall = false]) {
                 ),
                 spX(10),
                 if (!onlyVoiceCall)
-                  const Icon(
-                    Icons.video_call,
-                    color: Colors.blue,
+                  GestureDetector(
+                    onTap: () async {
+                      // await webRtc.navigator.mediaDevices.selectAudioOutput();
+                      // await FlutterAudioManagerPlus.changeToBluetooth();
+                    },
+                    child: const Icon(
+                      Icons.video_call,
+                      color: Colors.blue,
+                    ),
                   )
               ],
             )
