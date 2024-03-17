@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dialpad/flutter_dialpad.dart';
+import 'package:flutter_to_airplay/flutter_to_airplay.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:sip_ua/sip_ua.dart';
@@ -104,12 +106,14 @@ class CallActionButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     CallBloc callController = Get.find();
     ContactBloc _controller = Get.find();
+
     MyTelRepo repo = MyTelRepo();
     return Obx(() => Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                //mute
                 GestureDetector(
                   onTap: () {
                     callController.muteAudio();
@@ -124,6 +128,7 @@ class CallActionButtons extends StatelessWidget {
                       Colors.white.withOpacity(
                           callController.audioMuted.value ? .7 : .2)),
                 ),
+                //dialpad
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
@@ -141,12 +146,30 @@ class CallActionButtons extends StatelessWidget {
                       const Icon(Icons.dialpad, color: backGroundColor),
                       Colors.white.withOpacity(.2)),
                 ),
+                //sound
                 GestureDetector(
                   onTap: () {
-                    callController.toggleSpeaker();
+                    // if (Platform.isIOS) return;
+                    // if (Platform.isAndroid) {
+                    //   callController.changeSoundDest();
+                    // }
+                    // callController.showAirplayPopUp();
+                    // callController.toggleSpeaker();
                   },
                   child: buttonBG(
-                      const Icon(Icons.speaker, color: backGroundColor),
+                      Platform.isIOS
+                          ? const Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Icon(Icons.speaker, color: backGroundColor),
+                                AirPlayRoutePickerView(
+                                  tintColor: Colors.white,
+                                  activeTintColor: Colors.white,
+                                  backgroundColor: Colors.transparent,
+                                )
+                              ],
+                            )
+                          : const Icon(Icons.speaker, color: backGroundColor),
                       Colors.white.withOpacity(
                           callController.speakerOn.value ? .7 : .2)),
                 )
