@@ -1,24 +1,33 @@
 // ignore_for_file: unnecessary_nullable_for_final_variable_declarations, unused_field
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_callkit_incoming/entities/entities.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart' as webRtc;
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:uuid/uuid.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
+import 'package:voipmax/src/core/theme/color_theme.dart';
+import 'package:voipmax/src/core/theme/text_theme.dart';
+import 'package:voipmax/src/data/models/media_device_info.dart';
 import 'package:voipmax/src/repo.dart';
 import 'package:voipmax/src/routes/routes.dart';
 
 class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
-  late RTCVideoRenderer? localRenderer = RTCVideoRenderer();
-  late RTCVideoRenderer? remoteRenderer = RTCVideoRenderer();
-  MediaStream? _localStream;
-  MediaStream? _remoteStream;
+  late webRtc.RTCVideoRenderer? localRenderer = webRtc.RTCVideoRenderer();
+  late webRtc.RTCVideoRenderer? remoteRenderer = webRtc.RTCVideoRenderer();
+  webRtc.MediaStream? _localStream;
+  webRtc.MediaStream? _remoteStream;
+  List<BluetoothMediaDeviceInfo> availableSoundDests = [];
+  List<ScanResult> blueDevices = [];
   RxString callStatus = "".obs;
   Call? callStateController;
   RxBool isOnlyVoice = false.obs;
@@ -49,7 +58,7 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   }
 
   void callOnStreams(CallState event) async {
-    MediaStream? stream = event.stream;
+    webRtc.MediaStream? stream = event.stream;
     if (event.originator == 'local') {
       if (localRenderer != null) {
         localRenderer!.srcObject = stream;
@@ -126,7 +135,7 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
 
   void switchCamera() {
     if (_localStream != null) {
-      Helper.switchCamera(_localStream!.getVideoTracks()[0]);
+      webRtc.Helper.switchCamera(_localStream!.getVideoTracks()[0]);
       // setState(() {
       //   _mirror = !_mirror;
       // });
@@ -270,6 +279,81 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
     callStateController!.sendDTMF(dtmf);
   }
 
+  connectBluetooth({required String devId}) async {
+    var blueDev = blueDevices
+        .where((element) => element.device.remoteId.id == devId)
+        .first;
+    await blueDev.device.connect();
+    // var test = await webRtc.navigator.mediaDevices
+    // .selectAudioOutput(webRtc.AudioOutputOptions(deviceId: devId));
+    // var test = FlutterBluePlus
+    // print(test);
+  }
+
+  Future changeSoundDest() async {
+    List temp = [];
+    List<MediaDeviceInfo> devices =
+        await webRtc.navigator.mediaDevices.enumerateDevices();
+
+    if (Platform.isAndroid) {
+      await FlutterBluePlus.turnOn();
+    }
+    if (!await Permission.bluetooth.isGranted) return;
+    availableSoundDests = [];
+    for (var dev in devices) {
+      availableSoundDests.add(BluetoothMediaDeviceInfo(
+          id: dev.deviceId,
+          name: dev.label,
+          kind: dev.kind,
+          isConnected: false.obs));
+    }
+    availableSoundDests.removeWhere(
+        (element) => element.kind != "audiooutput" && element.kind != null);
+    // blueDevices = [];
+    for (var dev in availableSoundDests) {
+      temp.add(dev.id);
+    }
+    await FlutterBluePlus.startScan(
+        androidScanMode: AndroidScanMode.lowLatency,
+        timeout: const Duration(seconds: 4));
+
+    FlutterBluePlus.onScanResults.listen((results) {
+      for (ScanResult r in results) {
+        blueDevices = results;
+        // blueDevices.add(r.device);
+        r.device.connect();
+        if (r.device.platformName.isNotEmpty &&
+            r.device.remoteId.id.isNotEmpty) {
+          if (!temp.contains(r.device.remoteId.id)) {
+            availableSoundDests.add(BluetoothMediaDeviceInfo(
+                id: r.device.remoteId.id,
+                name: r.device.platformName,
+                kind: null,
+                isConnected: r.device.isConnected.obs));
+            temp.add(r.device.remoteId.id);
+          }
+        }
+        update();
+      }
+    });
+    showAvailableDevicesDialog();
+  }
+
+  showAvailableDevicesDialog() {
+    Get.dialog(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AvailableDevicesDialogBody(
+              availableSoundDests: availableSoundDests,
+              // blueDevices: blueDevices,
+              onConnect: connectBluetooth)
+        ],
+      ),
+    );
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -328,4 +412,70 @@ class CallBloc extends Bloc with GetSingleTickerProviderStateMixin {
   static final CallBloc _instance = CallBloc.internal();
   factory CallBloc() => _instance;
   CallBloc.internal();
+}
+
+class AvailableDevicesDialogBody extends StatelessWidget {
+  final List<BluetoothMediaDeviceInfo> availableSoundDests;
+  // final List<BluetoothDevice> blueDevices;
+  final Function({required String devId}) onConnect;
+  const AvailableDevicesDialogBody(
+      {super.key,
+      required this.availableSoundDests,
+      // required this.blueDevices,
+      required this.onConnect});
+
+  @override
+  Widget build(BuildContext context) {
+    CallBloc callController = Get.find();
+    return Container(
+      height: Get.height * .5,
+      width: Get.width * .8,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+          color: backGroundColor, borderRadius: BorderRadius.circular(12)),
+      padding: EdgeInsets.all(Get.width * .06),
+      child: Column(
+        children: [
+          Text(
+            "Available devices:",
+            style: textLarge,
+          ),
+          GetBuilder(
+              init: callController,
+              builder: (_) {
+                return SizedBox(
+                  height: Get.height * .4,
+                  width: Get.width * .8,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: callController.availableSoundDests.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            padding: EdgeInsets.all(Get.width * .04),
+                            child: GestureDetector(
+                              onTap: () {
+                                onConnect(
+                                    devId: availableSoundDests[index].id ?? "");
+                              },
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.speaker,
+                                    color: muteColor,
+                                  ),
+                                  Text(
+                                    availableSoundDests[index].name ??
+                                        "Unknown",
+                                    style: textSmall,
+                                  )
+                                ],
+                              ),
+                            ));
+                      }),
+                );
+              })
+        ],
+      ),
+    );
+  }
 }
