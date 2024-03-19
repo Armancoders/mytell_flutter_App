@@ -52,7 +52,7 @@ class MyTelRepo extends Bloc {
                 () => CupertinoDialogAction(
                   onPressed: () {
                     logOut().then((value) {
-                      Get.offAllNamed(Routes.ON_BOARDING);
+                      Get.offAllNamed(Routes.SPLASH);
                     });
                   },
                   child: loggingOut.value
@@ -90,7 +90,9 @@ class MyTelRepo extends Bloc {
     voiceMails = null;
     remoteUserDetails = {};
     baseSipUaHelper.unregister();
-    loggingOut.value = false;
+    await Get.deleteAll(force: true).then((value) {
+      loggingOut.value = false;
+    });
   }
 
   @override

@@ -14,6 +14,7 @@ class LoginBloc extends Bloc {
   TextEditingController passwordController = TextEditingController();
   RxBool logging = false.obs;
   late SharedPreferences prefs;
+  var onBoardIsDone = false;
   Future<void> login({bool? isPush = false}) async {
     if (userNameController.text.trim().isEmpty) {
       Get.snackbar("", "",
@@ -51,6 +52,7 @@ class LoginBloc extends Bloc {
                 : prefs.getString("passWord") ?? "")
         .then((value) async {
       if (value != null) {
+        prefs.setBool("onBoardingDone", true);
         repo.sipServer = value;
         logging.value = false;
         print("SALAM-MANSOUR");
@@ -85,19 +87,26 @@ class LoginBloc extends Bloc {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
-    // init();
+    init();
   }
 
   void autoLogin() async {
-    prefs = await SharedPreferences.getInstance();
     userNameController.text = prefs.getString("userName") ?? "";
     passwordController.text = prefs.getString("passWord") ?? "";
 
     if (userNameController.text.isNotEmpty &&
         passwordController.text.isNotEmpty) {
       login();
+    }
+  }
+
+  void init() async {
+    prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("onBoardingDone") ?? false) {
+      onBoardIsDone = true;
+    } else {
+      onBoardIsDone = false;
     }
   }
 }

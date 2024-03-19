@@ -12,7 +12,7 @@ import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/repo.dart';
 
 class MyTelFirebaseServices extends Bloc {
-  LoginBloc loginController = Get.put(LoginBloc(), permanent: true);
+  LoginBloc loginController = Get.find();
   MyTelRepo repo = MyTelRepo();
   late AndroidNotificationChannel channel;
   bool isFlutterLocalNotificationsInitialized = false;

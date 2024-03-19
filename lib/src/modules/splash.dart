@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voipmax/src/bloc/call_bloc.dart';
 import 'package:voipmax/src/bloc/contact_bloc.dart';
+import 'package:voipmax/src/bloc/login_bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/bloc/splash_bloc.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
@@ -27,6 +28,7 @@ class SplashScreen extends StatelessWidget {
     // Get.lazyPut(() => ContactBloc());
 
     SplashScreenBloc controller = Get.put(SplashScreenBloc(), permanent: true);
+    Get.put(LoginBloc(), permanent: true);
     Get.put(MyTelFirebaseServices(), permanent: true);
     return Scaffold(
       body: Container(
