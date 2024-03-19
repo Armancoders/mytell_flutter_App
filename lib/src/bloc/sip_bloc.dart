@@ -2,7 +2,9 @@ import 'package:get/get.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/bloc/call_bloc.dart';
+import 'package:voipmax/src/bloc/recent_bloc.dart';
 import 'package:voipmax/src/core/values/values.dart';
+import 'package:voipmax/src/data/models/recent_calls_model.dart';
 import 'package:voipmax/src/data/provider/sip_provider.dart';
 import 'package:voipmax/src/data/remote/api_helper.dart';
 import 'package:voipmax/src/data/services/foreground_service.dart';
@@ -17,6 +19,7 @@ class SIPBloc extends Bloc {
   RxString registrationStatus = MytelValues.deviceNotRegisteredStatus.obs;
   MyTellForeGroundService foreGroundService = Get.find();
   RxBool registering = false.obs;
+  RecentCallsBloc recentCallsController = Get.find();
 
   register() {
     if (repo.sipServer == null) return;
@@ -43,6 +46,8 @@ class SIPBloc extends Bloc {
 
   makeCall([bool voiceOnly = false, String? dest]) {
     callController.isOnlyVoice.value = voiceOnly;
+    recentCallsController.logger(
+        callLog: RecentCallsModel(callee: dest, caller: dest));
     _sipProvider.makeCall(voiceOnly, dest);
   }
 
