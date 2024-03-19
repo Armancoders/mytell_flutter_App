@@ -65,12 +65,12 @@ Widget recentItemsBody(
                       if (recent.callee != null &&
                           recent.callee.toString().isNotEmpty &&
                           recent.caller != null &&
-                          recent.caller.toString().isEmpty)
+                          recent.caller.toString().isNotEmpty)
                         spY(5),
                       if (recent.callee != null &&
                           recent.callee.toString().isNotEmpty &&
                           recent.caller != null &&
-                          recent.caller.toString().isEmpty)
+                          recent.caller.toString().isNotEmpty)
                         Text(
                           recent.caller.toString(),
                           style: textSmall.copyWith(color: hintColor),

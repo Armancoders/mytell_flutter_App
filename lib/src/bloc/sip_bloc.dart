@@ -44,10 +44,10 @@ class SIPBloc extends Bloc {
     }
   }
 
-  makeCall([bool voiceOnly = false, String? dest]) {
+  makeCall([bool voiceOnly = false, String? dest, String? calle]) {
     callController.isOnlyVoice.value = voiceOnly;
     recentCallsController.logger(
-        callLog: RecentCallsModel(callee: dest, caller: dest));
+        callLog: RecentCallsModel(callee: calle ?? "", caller: dest));
     _sipProvider.makeCall(voiceOnly, dest);
   }
 

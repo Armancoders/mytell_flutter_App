@@ -57,7 +57,8 @@ Widget contactItemBody(Contact? contact) {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _controller.makeCall(true, contact?.phones[0].number);
+                    _controller.makeCall(
+                        true, contact?.phones[0].number, contact?.displayName);
                   },
                   child: const Icon(
                     Icons.phone,

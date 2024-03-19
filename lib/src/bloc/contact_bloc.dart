@@ -15,8 +15,9 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
   List<Contact>? tempContacts = [];
   Extensions? tempExtensions;
 
-  Future makeCall([bool voiceOnly = false, String? dest]) async {
-    sipController.makeCall(voiceOnly, dest);
+  Future makeCall(
+      [bool voiceOnly = false, String? dest, String? callee]) async {
+    sipController.makeCall(voiceOnly, dest, callee);
   }
 
   @override
