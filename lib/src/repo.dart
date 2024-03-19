@@ -52,7 +52,7 @@ class MyTelRepo extends Bloc {
                 () => CupertinoDialogAction(
                   onPressed: () {
                     logOut().then((value) {
-                      Get.offAllNamed(Routes.LOGIN);
+                      Get.offAllNamed(Routes.ON_BOARDING);
                     });
                   },
                   child: loggingOut.value
