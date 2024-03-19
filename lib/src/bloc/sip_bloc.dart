@@ -19,7 +19,6 @@ class SIPBloc extends Bloc {
   RxString registrationStatus = MytelValues.deviceNotRegisteredStatus.obs;
   MyTellForeGroundService foreGroundService = Get.find();
   RxBool registering = false.obs;
-  RecentCallsBloc recentCallsController = Get.find();
 
   register() {
     if (repo.sipServer == null) return;
@@ -46,6 +45,7 @@ class SIPBloc extends Bloc {
 
   makeCall([bool voiceOnly = false, String? dest, String? calle]) {
     callController.isOnlyVoice.value = voiceOnly;
+    RecentCallsBloc recentCallsController = Get.find();
     recentCallsController.logger(
         callLog: RecentCallsModel(callee: calle ?? "", caller: dest));
     _sipProvider.makeCall(voiceOnly, dest);
