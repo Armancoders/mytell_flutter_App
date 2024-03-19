@@ -81,9 +81,13 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
       }
       repo.contacts = [];
       for (var contact in tempContacts!) {
-        if (contact.displayName.toLowerCase().contains(q.toLowerCase()) ||
-            contact.phones[0].number.contains(q)) {
+        if (contact.displayName.toLowerCase().contains(q.toLowerCase())) {
           repo.contacts!.add(contact);
+        }
+        if (contact.phones.isNotEmpty) {
+          if (contact.phones[0].number.contains(q)) {
+            repo.contacts!.add(contact);
+          }
         }
       }
       update();
