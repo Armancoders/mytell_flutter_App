@@ -57,8 +57,22 @@ Widget contactItemBody(Contact? contact) {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _controller.makeCall(
-                        true, contact?.phones[0].number, contact?.displayName);
+                    if (contact?.phones.isNotEmpty ?? false) {
+                      _controller.makeCall(true, contact?.phones.first.number,
+                          contact?.displayName);
+                    } else {
+                      Get.snackbar("", "",
+                          backgroundColor: Colors.redAccent,
+                          titleText: Text(
+                            "Error",
+                            style:
+                                textTitleMedium.copyWith(color: Colors.white),
+                          ),
+                          messageText: Text(
+                            "The selected contact has no valid phone number.",
+                            style: textMedium.copyWith(color: Colors.white),
+                          ));
+                    }
                   },
                   child: const Icon(
                     Icons.phone,
