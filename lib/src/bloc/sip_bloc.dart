@@ -19,7 +19,7 @@ class SIPBloc extends Bloc {
   RxString registrationStatus = MytelValues.deviceNotRegisteredStatus.obs;
   MyTellForeGroundService foreGroundService = Get.find();
   RxBool registering = false.obs;
-
+  String? outGoingCalleeName = "";
   register() {
     if (repo.sipServer == null) return;
     registering.value = true;
@@ -46,6 +46,7 @@ class SIPBloc extends Bloc {
   makeCall([bool voiceOnly = false, String? dest, String? calle]) {
     callController.isOnlyVoice.value = voiceOnly;
     RecentCallsBloc recentCallsController = Get.find();
+    outGoingCalleeName = calle;
     recentCallsController.logger(
         callLog: RecentCallsModel(callee: calle ?? "", caller: dest));
     _sipProvider.makeCall(voiceOnly, dest);
@@ -92,7 +93,9 @@ class SIPBloc extends Bloc {
         break;
       case CallStateEnum.CALL_INITIATION:
         callController.saveRemoteUserDetails(
-            callee: call.remote_display_name ?? "Unknown",
+            callee: call.direction != 'INCOMING'
+                ? outGoingCalleeName ?? call.remote_display_name ?? "Unknown"
+                : call.remote_display_name ?? "Unknown",
             caller: call.remote_identity ?? "Unknown");
         if (callController.callStatus.value !=
             CallStateEnum.CALL_INITIATION.name) return;
