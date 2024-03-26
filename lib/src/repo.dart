@@ -9,6 +9,7 @@ import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 import 'package:voipmax/src/core/utils/utils.dart';
 import 'package:voipmax/src/data/models/extensions.dart';
+import 'package:voipmax/src/data/models/recent_calls_model.dart';
 import 'package:voipmax/src/data/models/sip_server_model.dart';
 import 'package:voipmax/src/data/models/voicemail_model.dart';
 import 'package:voipmax/src/routes/routes.dart';
@@ -20,6 +21,7 @@ class MyTelRepo extends Bloc {
   Extensions? extensions;
   var remoteUserDetails = {};
   List<Contact>? contacts = [];
+  List<RecentCallsModel> recents = [];
   VoiceMailModel? voiceMails;
   RxBool loggingOut = false.obs;
 
