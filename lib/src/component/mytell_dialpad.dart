@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_dtmf/dtmf.dart';
+import 'package:voipmax/src/core/theme/text_theme.dart';
 
 class MyTellDialPad extends StatefulWidget {
   final ValueSetter<String>? makeCall;
@@ -284,11 +285,8 @@ class _DialButtonState extends State<DialButton>
                                       ),
                                       Text(
                                         widget.title!,
-                                        style: TextStyle(
-                                            fontSize: sizeFactor / 2,
-                                            color: widget.textColor != null
-                                                ? widget.textColor
-                                                : Colors.black),
+                                        style: textTitleXXLarge.copyWith(
+                                            fontWeight: FontWeight.normal),
                                       ),
                                       if (!widget.hideSubtitle)
                                         Text(widget.subtitle!,
