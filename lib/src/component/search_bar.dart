@@ -4,8 +4,9 @@ import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 
 class CustomSearchBar extends StatelessWidget {
+  final String? hintText;
   final Function({required String? q}) onSearch;
-  const CustomSearchBar({super.key, required this.onSearch});
+  const CustomSearchBar({super.key, required this.onSearch, this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class CustomSearchBar extends StatelessWidget {
                 onChanged: (value) => onSearch(q: value.isEmpty ? null : value),
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Search contact",
+                    hintText: hintText ?? "Search",
                     hintStyle: textSmall.copyWith(color: hintColor)),
               ),
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/recent_bloc.dart';
-import 'package:voipmax/src/component/sip_register_statusbar.dart';
 import 'package:voipmax/src/core/theme/color_theme.dart';
 import 'package:voipmax/src/core/theme/dimensions.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
@@ -17,7 +16,6 @@ Widget recentTitle() {
           "Recent",
           style: textTitleLarge,
         ),
-        const SipRegisterStatusBar(),
       ],
     ),
   );
