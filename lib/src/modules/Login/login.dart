@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/login_bloc.dart';
@@ -32,7 +34,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // spY(Get.height * .04),
+                if (Platform.isAndroid) spY(Get.height * .04),
                 if (!loginController.onBoardIsDone) backBtn(),
                 voipMaxLogo(),
                 spY(Get.height * .04),
