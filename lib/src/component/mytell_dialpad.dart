@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_dtmf/dtmf.dart';
+import 'package:get/get.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 
 class MyTellDialPad extends StatefulWidget {
@@ -109,18 +110,32 @@ class _MyTellDialPadState extends State<MyTellDialPad> {
 
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
-            child: TextFormField(
-              readOnly: false,
-              keyboardType: TextInputType.none,
-              style: TextStyle(
-                  color: widget.dialOutputTextColor ?? Colors.black,
-                  fontSize: sizeFactor / 2),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(border: InputBorder.none),
-              controller: textEditingController,
+            child: SizedBox(
+              height: Get.height * .1,
+              child: TextFormField(
+                readOnly: false,
+                keyboardType: TextInputType.none,
+                style: textTitleXXLarge.copyWith(
+                    fontSize: textEditingController!.value.text.length <= 11
+                        ? Get.textTheme.displaySmall?.fontSize?.toDouble()
+                        : textEditingController!.value.text.length <= 17
+                            ? Get.textTheme.headlineLarge?.fontSize?.toDouble()
+                            : textEditingController!.value.text.length <= 20
+                                ? Get.textTheme.headlineSmall?.fontSize
+                                    ?.toDouble()
+                                : Get.textTheme.headlineSmall?.fontSize
+                                    ?.toDouble(),
+                    fontWeight: FontWeight.normal),
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                controller: textEditingController,
+              ),
             ),
           ),
           ..._getDialerButtons(),
