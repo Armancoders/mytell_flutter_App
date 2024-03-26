@@ -38,7 +38,7 @@ class DialPadScreen extends StatelessWidget {
               children: [
                 MyTellDialPad(
                   hideSubtitle: false,
-                  enableDtmf: true,
+                  enableDtmf: false,
                   outputMask: "********************",
                   buttonColor: hintBackGroundColor,
                   backspaceButtonIconColor: hintColor,
