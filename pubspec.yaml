@@ -39,6 +39,7 @@ dependencies:
   flutter_to_airplay: ^2.0.4
   flutter_downloader: ^1.11.6
   audioplayers: ^5.2.1
+  tutorial_coach_mark: ^1.2.11
 
 dev_dependencies:
   flutter_test:

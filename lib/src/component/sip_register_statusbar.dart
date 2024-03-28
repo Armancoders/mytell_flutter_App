@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/home_screen_bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/core/utils/utils.dart';
 import 'package:voipmax/src/core/values/values.dart';
@@ -11,6 +12,7 @@ class SipRegisterStatusBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SIPBloc sipController = Get.find();
+    HomeScreenBloc homeScreenController = Get.find();
     MyTelRepo repo = MyTelRepo();
     return Padding(
         padding: const EdgeInsets.only(right: 8.0),
@@ -20,6 +22,7 @@ class SipRegisterStatusBar extends StatelessWidget {
               repo.onLogOut(context);
             },
             child: Column(
+              key: homeScreenController.statusBarKey,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

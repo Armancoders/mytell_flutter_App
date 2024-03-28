@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voipmax/src/bloc/home_screen_bloc.dart';
 import 'package:voipmax/src/modules/Messages/messages.dart';
 import 'package:voipmax/src/modules/Contact/contact.dart';
 import 'package:voipmax/src/modules/Recent/recent.dart';
@@ -21,6 +22,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var homeScreenController = Get.put(HomeScreenBloc());
+    homeScreenController.showTutorial(context);
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           currentIndex: 0,
