@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voipmax/src/bloc/contact_bloc.dart';
+import 'package:voipmax/src/bloc/home_screen_bloc.dart';
 import 'package:voipmax/src/component/search_bar.dart';
 import 'package:voipmax/src/component/sip_register_statusbar.dart';
 import 'package:voipmax/src/modules/Contact/widgets.dart';
@@ -14,7 +15,9 @@ class Contact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ContactBloc _controller = Get.find();
+    HomeScreenBloc homeScreenController = Get.find();
     MyTelRepo repo = MyTelRepo();
+    // homeScreenController.showContactScreenTutorial(context);
     // _controller.onInit();
     return GetBuilder(
         init: _controller,
@@ -34,6 +37,7 @@ class Contact extends StatelessWidget {
               //   child: const CustomSearchBar(),
               // ),
               bottom: TabBar(
+                key: homeScreenController.contactTabsKey,
                 labelColor: primaryColor,
                 indicatorColor: primaryColor,
                 unselectedLabelColor: muteColor,

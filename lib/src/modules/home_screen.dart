@@ -9,9 +9,14 @@ import 'package:voipmax/src/modules/Voice%20Mail/voice_mail_screen.dart';
 import 'package:voipmax/src/modules/dialpad.dart';
 import '../core/theme/color_theme.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final List mainPages = [
     RecentScreen(),
     DialPadScreen(),
@@ -20,11 +25,17 @@ class HomeScreen extends StatelessWidget {
     VoiceMailScreen(),
   ];
 
+  var index = 0;
+
   @override
   Widget build(BuildContext context) {
     var homeScreenController = Get.put(HomeScreenBloc());
-    homeScreenController.showTutorial(context);
+    homeScreenController.showStatusBarTutorial(context);
+    if (index == 2) {
+      homeScreenController.showContactScreenTutorial(context);
+    }
     return CupertinoTabScaffold(
+        controller: homeScreenController.controller,
         tabBar: CupertinoTabBar(
           currentIndex: 0,
           height: Get.width * 0.13,
@@ -32,7 +43,11 @@ class HomeScreen extends StatelessWidget {
           inactiveColor: muteColor,
           backgroundColor: Colors.white,
           border: const Border(),
-          onTap: (itemIndex) {},
+          onTap: (itemIndex) {
+            setState(() {
+              index = itemIndex;
+            });
+          },
           items: const [
             BottomNavigationBarItem(
                 activeIcon: Icon(Icons.watch_later),
