@@ -14,10 +14,11 @@ class AipHelper extends Bloc {
   // MyTelRepo repo = MyTelRepo();
   final _baseUrl = "https://core.mytell.org";
 
-  static Future<SIPServerModel?> authenticateDevice(
+  static Future<(SIPServerModel?, Map<dynamic, dynamic>?)> authenticateDevice(
       {required String userName, required String password}) async {
     SIPServerModel? sipServer;
     var endPoint = "/authenticate_device/";
+    Map<String, dynamic>? data;
 
     var headers = {
       'accept': 'application/json',
@@ -35,13 +36,11 @@ class AipHelper extends Bloc {
     };
 
     try {
-      var response =           await http.post(
+      var response = await http.post(
           Uri.parse("${AipHelper()._baseUrl}$endPoint"),
           body: json.encode(body),
           headers: headers);
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      print("MANSOUR SALAM 2");
-      print(data);
+      data = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.statusCode == 200) {
         sipServer = SIPServerModel.fromJson(data);
       } else {
@@ -49,9 +48,10 @@ class AipHelper extends Bloc {
       }
     } catch (e) {
       sipServer = null;
+      data = null;
     }
 
-    return sipServer;
+    return (sipServer, data);
   }
 
   static Future<void> deviceStatus({

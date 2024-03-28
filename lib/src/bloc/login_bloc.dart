@@ -118,15 +118,10 @@ class LoginBloc extends Bloc {
                 ? passwordController.text
                 : prefs.getString("passWord") ?? "")
         .then((value) async {
-      if (value != null) {
+      if (value.$1 != null) {
         prefs.setBool("onBoardingDone", true);
-        repo.sipServer = value;
+        repo.sipServer = value.$1;
         logging.value = false;
-        print("SALAM-MANSOUR");
-        print(value.data!.wssDomain);
-        print(value.data!.extension);
-        print(value.data!.password);
-        print(value.data!.wssPort);
 
         SIPBloc sipBloc = Get.find();
         sipBloc.register();
@@ -136,6 +131,17 @@ class LoginBloc extends Bloc {
         if (!isPush!) {
           Get.offAllNamed(Routes.HOME);
         }
+      } else if (value.$2 != null) {
+        Get.snackbar("", "",
+            backgroundColor: Colors.redAccent,
+            titleText: Text(
+              "Error",
+              style: textTitleMedium.copyWith(color: Colors.white),
+            ),
+            messageText: Text(
+              value.$2!["detail"].toString(),
+              style: textMedium.copyWith(color: Colors.white),
+            ));
       } else {
         Get.snackbar("", "",
             backgroundColor: Colors.redAccent,
