@@ -46,6 +46,7 @@ Widget voipMaxLogo() {
 
 Widget loginTitle() {
   MyTelRepo repo = MyTelRepo();
+  LoginBloc loginController = Get.find();
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -64,6 +65,7 @@ Widget loginTitle() {
         ],
       ),
       GestureDetector(
+        key: loginController.uniqIdWidgetKey,
         onTap: () {
           Share.share("Hello, my unique id is: ${repo.uniqueDeviceId ?? " "}");
         },
