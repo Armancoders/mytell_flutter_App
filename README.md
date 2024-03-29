@@ -1,9 +1,25 @@
-# voipmax
+# MyTell
 
 Voip flutter project.
 
-## Getting Started
+## Clone new version
+    android :
+        change the folowing ids :
+        1. android/app/build.gradle  in android bloc change namespace
+        2. android/app/build.gradle  in defaultConfig bloc change applicationId
+        3. android/app/src/main/kotlin/com/armancoders/mytell/MainActivity.kt  change package name in first line
+        4. android/app/src/main/AndroidManifest.xml  in application tag change android:label
+    
+    ios :
+        open xcode and on TARGETS section click on Runner. Then in "Signign & Capabilities" tab change "Bundle Identifier"
 
-This project is a starting point for a Flutter application.
+After all delete the folowing paths :
+    1. build folder
+    2. mytell.jks
 
-Readme will be updated whenever project published.
+Then rerun build proccess.
+
+## Update an existing version
+    opne pubspec.yaml file and change version.
+    
+    note : you need to specifie new version every time on googleplay and appstore when you upload new version.
