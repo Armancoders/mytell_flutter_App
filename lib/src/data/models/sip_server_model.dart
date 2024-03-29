@@ -3,7 +3,8 @@ class SIPServerModel {
 
   SIPServerModel({this.data});
 
-  SIPServerModel.fromJson(Map<String, dynamic> json) {
+  SIPServerModel.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return;
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 }
