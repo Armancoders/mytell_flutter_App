@@ -24,7 +24,6 @@ class ContactBloc extends Bloc with GetTickerProviderStateMixin {
   void onInit() {
     super.onInit();
     initTabController();
-    getExtensions();
     getContacts();
   }
 

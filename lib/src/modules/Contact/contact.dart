@@ -17,8 +17,7 @@ class Contact extends StatelessWidget {
     ContactBloc _controller = Get.find();
     HomeScreenBloc homeScreenController = Get.find();
     MyTelRepo repo = MyTelRepo();
-    // homeScreenController.showContactScreenTutorial(context);
-    // _controller.onInit();
+    _controller.getExtensions();
     return GetBuilder(
         init: _controller,
         builder: (_) {
@@ -32,10 +31,6 @@ class Contact extends StatelessWidget {
               title: CustomSearchBar(
                 onSearch: _controller.search,
               ),
-              // flexibleSpace: Padding(
-              //   padding: const EdgeInsets.only(bottom: 15.0),
-              //   child: const CustomSearchBar(),
-              // ),
               bottom: TabBar(
                 key: homeScreenController.contactTabsKey,
                 labelColor: primaryColor,
