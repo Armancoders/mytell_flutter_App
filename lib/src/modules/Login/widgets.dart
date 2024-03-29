@@ -85,6 +85,7 @@ Widget userNameField() {
             borderRadius: BorderRadius.circular(Get.width * .08)),
         padding: EdgeInsets.symmetric(horizontal: Get.width * .05, vertical: 2),
         child: TextField(
+          textInputAction: TextInputAction.next,
           controller: loginController.userNameController,
           decoration: InputDecoration(
               border: InputBorder.none,
@@ -107,6 +108,7 @@ Widget passwordField() {
             borderRadius: BorderRadius.circular(Get.width * .08)),
         padding: EdgeInsets.symmetric(horizontal: Get.width * .05, vertical: 2),
         child: TextField(
+          textInputAction: TextInputAction.done,
           controller: loginController.passwordController,
           decoration: InputDecoration(
               border: InputBorder.none,
