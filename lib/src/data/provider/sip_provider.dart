@@ -104,6 +104,8 @@ class SIPProvider extends Bloc implements SipUaHelperListener {
 
   unRegister() {
     baseSipUaHelper.unregister();
+    baseSipUaHelper.stop();
+    baseSipUaHelper.terminateSessions({});
   }
 
   @override
