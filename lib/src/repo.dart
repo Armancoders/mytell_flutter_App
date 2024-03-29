@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
+import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
 import 'package:voipmax/src/core/utils/utils.dart';
 import 'package:voipmax/src/data/models/extensions.dart';
@@ -83,15 +84,16 @@ class MyTelRepo extends Bloc {
   Future<void> logOut() async {
     loggingOut.value = true;
     var prefs = await SharedPreferences.getInstance();
+    SIPBloc sipController = Get.find();
+    sipController.unRegister();
     prefs.clear();
     sipServer = null;
-    uniqueDeviceId = null;
+    // uniqueDeviceId = null;
     fcmToken = null;
     extensions = null;
     contacts = null;
     voiceMails = null;
     remoteUserDetails = {};
-    baseSipUaHelper.unregister();
     await Get.deleteAll(force: true).then((value) {
       loggingOut.value = false;
     });

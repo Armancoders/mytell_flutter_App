@@ -43,6 +43,10 @@ class SIPBloc extends Bloc {
     }
   }
 
+  unRegister() {
+    _sipProvider.unRegister();
+  }
+
   makeCall([bool voiceOnly = false, String? dest, String? calle]) {
     callController.isOnlyVoice.value = voiceOnly;
     RecentCallsBloc recentCallsController = Get.find();

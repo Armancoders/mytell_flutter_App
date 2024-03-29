@@ -102,6 +102,10 @@ class SIPProvider extends Bloc implements SipUaHelperListener {
     // _settings.
   }
 
+  unRegister() {
+    baseSipUaHelper.unregister();
+  }
+
   @override
   void onInit() {
     super.onInit();
