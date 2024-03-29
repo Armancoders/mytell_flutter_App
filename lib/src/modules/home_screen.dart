@@ -30,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var homeScreenController = Get.put(HomeScreenBloc());
-    homeScreenController.showStatusBarTutorial(context);
-    if (index == 2) {
-      homeScreenController.showContactScreenTutorial(context);
-    }
+    homeScreenController.showHomeScreenTutorial(context);
+    // if (index == 2) {
+    //   homeScreenController.showContactScreenTutorial(context);
+    // }
     return CupertinoTabScaffold(
         controller: homeScreenController.controller,
         tabBar: CupertinoTabBar(
@@ -48,26 +48,35 @@ class _HomeScreenState extends State<HomeScreen> {
               index = itemIndex;
             });
           },
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
                 activeIcon: Icon(Icons.watch_later),
                 icon: Icon(Icons.watch_later),
                 label: "Recent"),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
                 activeIcon: Icon(Icons.dialpad),
                 icon: Icon(Icons.dialpad),
                 label: "Keypad"),
             BottomNavigationBarItem(
                 activeIcon: Icon(Icons.perm_contact_cal),
-                icon: Icon(Icons.perm_contact_cal),
+                icon: Icon(
+                  Icons.perm_contact_cal,
+                  key: homeScreenController.contactTabIconKey,
+                ),
                 label: "Contact"),
             BottomNavigationBarItem(
                 activeIcon: Icon(Icons.chat_bubble),
-                icon: Icon(Icons.chat_bubble),
+                icon: Icon(
+                  Icons.chat_bubble,
+                  key: homeScreenController.messagesTabIconKey,
+                ),
                 label: "Chat"),
             BottomNavigationBarItem(
                 activeIcon: Icon(Icons.voicemail),
-                icon: Icon(Icons.voicemail),
+                icon: Icon(
+                  Icons.voicemail,
+                  key: homeScreenController.voiceMailTabIconKey,
+                ),
                 label: "Voicemail"),
           ],
         ),
