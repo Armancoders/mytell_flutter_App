@@ -29,6 +29,6 @@ After all delete the folowing paths :
 Then rerun build proccess.
 
 ## Update an existing version
-    opne pubspec.yaml file and change version.
+    on the pubspec.yaml file and change version.
     
     note : you need to specifie new version every time on googleplay and appstore when you upload new version.
