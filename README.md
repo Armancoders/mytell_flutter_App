@@ -12,6 +12,15 @@ Voip flutter project.
     
     ios :
         open xcode and on TARGETS section click on Runner. Then in "Signign & Capabilities" tab change "Bundle Identifier"
+    
+    change ui per clone:
+        1. add new images to assets folder
+        2. change primary color in lib/src/core/theme/color_theme.dart
+        3. change current logo in splash(by specifie the name of new image which you added to assets) by change the path on image in lib/src/modules/splash.dart
+        4. change current app name in splash lib/src/modules/splash.dart
+        5. change app name and image in onboarding screen(just like previous one you done in splash) in lib/src/modules/OnBoarding/widgets.dart
+        6. change image in login screen lib/src/modules/Login/widgets.dart
+
 
 After all delete the folowing paths :
     1. build folder
