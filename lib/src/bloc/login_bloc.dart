@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
@@ -43,7 +44,10 @@ class LoginBloc extends Bloc {
       onFinish: () {
         prefs.setBool("loginToturialDone", true);
       },
-      onClickTarget: (target) {},
+      onClickTarget: (target) {
+        loginTutorialCoachMark.finish();
+        shareDeviceId();
+      },
       onClickTargetWithTapPosition: (target, tapDetails) {},
       onClickOverlay: (target) {},
       onSkip: () {
@@ -69,7 +73,7 @@ class LoginBloc extends Bloc {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "You need to share your unique id with admin to register your device. Then you can login and use MyTell.",
+                    "You need to have a purchased account from mytell.org . Then you have to share your device id for register on Mytell by tapping on this icon.",
                     style: textLarge.copyWith(color: Colors.white),
                   ),
                 ],
@@ -172,6 +176,10 @@ class LoginBloc extends Bloc {
         passwordController.text.isNotEmpty) {
       login();
     }
+  }
+
+  shareDeviceId() {
+    Share.share("Hello, my unique id is: ${repo.uniqueDeviceId ?? " "}");
   }
 
   void init() async {
