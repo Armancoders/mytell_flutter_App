@@ -195,6 +195,7 @@ class HomeScreenBloc extends Bloc {
       onClickTargetWithTapPosition: (target, tapDetails) {},
       onClickOverlay: (target) {},
       onSkip: () {
+        prefs.setBool("homeScreenTutorialDone", true);
         return true;
       },
     );
