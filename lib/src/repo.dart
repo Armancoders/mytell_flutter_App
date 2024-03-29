@@ -1,10 +1,11 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:unique_identifier/unique_identifier.dart';
 import 'package:voipmax/src/bloc/bloc.dart';
 import 'package:voipmax/src/bloc/sip_bloc.dart';
 import 'package:voipmax/src/core/theme/text_theme.dart';
@@ -26,11 +27,19 @@ class MyTelRepo extends Bloc {
   VoiceMailModel? voiceMails;
   RxBool loggingOut = false.obs;
 
-  Future getIMEI() async {
+  Future getUniqueId() async {
     try {
-      Permission.phone.request();
-      uniqueDeviceId = await UniqueIdentifier.serial;
-      print(uniqueDeviceId);
+      // Permission.phone.request();
+      // uniqueDeviceId = await UniqueIdentifier.serial;
+      // print(uniqueDeviceId);
+      var deviceInfo = DeviceInfoPlugin();
+      if (Platform.isIOS) {
+        var iosDeviceInfo = await deviceInfo.iosInfo;
+        uniqueDeviceId = iosDeviceInfo.identifierForVendor;
+      } else if (Platform.isAndroid) {
+        var androidDeviceInfo = await deviceInfo.androidInfo;
+        uniqueDeviceId = androidDeviceInfo.id;
+      }
     } catch (e) {
       uniqueDeviceId = null;
     }
@@ -102,7 +111,7 @@ class MyTelRepo extends Bloc {
   @override
   void onInit() {
     super.onInit();
-    getIMEI();
+    getUniqueId();
   }
 
   static final MyTelRepo _instance = MyTelRepo.internal();

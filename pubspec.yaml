@@ -40,6 +40,8 @@ dependencies:
   flutter_downloader: ^1.11.6
   audioplayers: ^5.2.1
   tutorial_coach_mark: ^1.2.11
+  device_info_plus: ^10.0.1
+  android_id: ^0.3.6
 
 dev_dependencies:
   flutter_test:
